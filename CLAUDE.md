@@ -108,7 +108,7 @@ German. Notes on German (usage) are in Ukrainian.
   - `uk_nonstandard`: common non-standard spellings (see "Ukrainian spelling").
   - `uk_note`: a note on Ukrainian, written in German.
   - `en`: the standard clinical English term, a bridge for English-speaking
-    peers. It is shown as a secondary line on the back of every card in both
+    peers. It uses British spelling (`faeces`), as WHO and ECDC do. It is shown as a secondary line on the back of every card in both
     editions. It never appears on the front (it would give away cognates) and
     never gets a card direction of its own.
   - `example_de`, `example_uk`: optional example sentences, in our own wording.
@@ -243,7 +243,6 @@ When a decision is made, move it to "Decisions" above.
 - Tag vocabulary: which `thema::` tags, and whether to add source or status
   tags? The pilot uses `thema::probenmaterial` and `thema::medizinprodukt`.
 - Conventions used in the pilot, not yet confirmed by the user:
-  - English uses British spelling (`faeces`), as WHO and ECDC do.
   - `de_plural` is `–` when the plural isn't used in the card's sense, even
     if Wiktionary lists one (`Blute`, `Urine`; `Stühle` only means chairs).
   - When Wiktionary has no entry, Ukrainian stress is taken from the

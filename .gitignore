@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.idea/
+.vscode/
+*.swp
+
+# Claude Code: personal, machine-local files
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Anki full-collection exports contain the entire personal collection,
+# including review history. Never commit them.
+*.colpkg

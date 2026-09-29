@@ -8,6 +8,9 @@ desktop.ini
 .vscode/
 *.swp
 
+# Local drop folder for material to show Claude (not part of the repo)
+/tmp/
+
 # Claude Code: personal, machine-local files
 .claude/settings.local.json
 CLAUDE.local.md

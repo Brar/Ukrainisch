@@ -34,6 +34,11 @@ Every note must produce a card in each direction.
   attribution in its description.
 - Never commit `*.colpkg` (full collection exports that include personal review
   history). It is already in `.gitignore`.
+- `tmp/` is a local, gitignored folder where the user drops material for Claude
+  to look at (documents, screenshots, word lists, exports). Treat what's there
+  as input, not as repository content. Its files may be under incompatible
+  licenses, so the sourcing rules above apply before any text from them goes
+  into a note or a committed file.
 
 ## Anki access
 
@@ -44,6 +49,10 @@ Every note must produce a card in each direction.
   (`~/.claude.json`), so there is no `.mcp.json` in this directory.
 - Anki must be open for the tools to work. If the `anki` tools are missing,
   start Anki and run `/mcp` to reconnect.
+- The add-on's `create_deck` tool refuses names with more than two levels
+  (`A::B`). This is an arbitrary check in that tool only. `add_note` and
+  `add_notes` work with deeper decks, but the deck must already exist. Create
+  three-level decks by hand in Anki ("Stapel erstellen" in the German UI).
 
 ## Terminology
 
@@ -57,16 +66,52 @@ Every note must produce a card in each direction.
 - Use standard modern Ukrainian (2019 orthography). Avoid Russisms and calques
   from Russian.
 
+## Ukrainian spelling
+
+- Main form: the standard spelling under the 2019 orthography (*Український
+  правопис*). Drug names use the Ukrainian INN (МНН) spelling in the
+  *Державний реєстр лікарських засобів України*.
+- Synonyms that are in real clinical use also go on the card (e.g.
+  `мокротиння` / `харкотиння`, `випорожнення` / `кал`).
+- Common non-standard *spellings* (e.g. from lab exports, such as
+  `Цефтазідім`) may be noted on the card as non-standard, but are never the
+  answer.
+- Discard everything else: keyboard or encoding damage (`мякі`, `м"які`),
+  capitalisation variants, inflected forms (cards use the dictionary form) and
+  word-order variants.
+- Apostrophe: ASCII `'` (U+0027), as in the existing course deck. Don't use
+  `’` (U+2019) or `ʼ` (U+02BC); mixing them breaks searches in Anki.
+- Check borrowed words against the *правило дев'ятки*: after д, т, з, с, ц,
+  ж, ч, ш, р, write и (not і) before a consonant (`цефтазидим`, `рифампіцин`,
+  `триметоприм`). Drug names should still be confirmed in the State Register.
+
+## Decisions
+
+- Medical cards live under the deck `Ukrainisch::Medizin`, a sibling of
+  `Ukrainisch::Anfänger`. `Ukrainisch::Anfänger` is an imported beginner course
+  (740 notes, note type `Basic-a9aca`, German → Ukrainian only, tags `урок-N`)
+  and must not be changed.
+- Below `Ukrainisch::Medizin` there is exactly one level of topic subdecks,
+  one per topic that is studied on its own:
+  - `Ukrainisch::Medizin::Mikrobiologie`: specimens, organisms, lab results
+  - `Ukrainisch::Medizin::Hygiene`: infection prevention and control
+  - `Ukrainisch::Medizin::Antiinfektiva`: drug names, antimicrobial stewardship
+  - `Ukrainisch::Medizin::Klinik`: departments, general clinical terms, forms
+
+  Finer or overlapping topics are handled with hierarchical tags (e.g.
+  `thema::probenmaterial`), and a note can carry several of them. Each note
+  goes in exactly one deck, the topic it belongs to most.
+
 ## Open decisions
 
-Record each decision here once it's made, and remove it from this list.
+When a decision is made, move it to "Decisions" above.
 
-- Deck structure: one deck, or subdecks per topic?
 - Note type and fields: built-in "Basic (and reversed card)", or a custom type
   with extra fields (German article/plural, Ukrainian gender, verb aspect pair,
   abbreviation, example sentence, source)?
 - Stress marks on Ukrainian words (combining acute, U+0301)?
-- Tagging scheme (by topic, by source, by status)?
+- Tag vocabulary: which `thema::` tags, and whether to add source or status
+  tags?
 - Audio / TTS?
 - Source of truth: Anki only, or also version-controlled word lists (e.g. TSV)
   in this directory?

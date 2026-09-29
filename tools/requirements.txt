@@ -1,0 +1,4 @@
+# soundfile >= 0.13 is needed for MP3 bitrate settings.
+numpy>=2
+sounddevice>=0.5
+soundfile>=0.13

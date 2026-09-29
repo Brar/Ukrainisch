@@ -31,7 +31,8 @@ Early setup; no cards published yet.
 
 Cards are maintained in Anki desktop. They are created and edited with the help
 of [Claude Code](https://claude.com/claude-code) through the
-[AnkiMCP add-on](https://github.com/ankimcp/anki-mcp-server-addon).
+[AnkiMCP add-on](https://github.com/ankimcp/anki-mcp-server-addon). The German
+audio is recorded with [`tools/record_audio.py`](tools/record_audio.py).
 
 ## Disclaimer
 
@@ -50,3 +51,6 @@ Suggested attribution: *"Ukrainisch" by Brar Piening,
 
 Where a note adapts text from [Wiktionary](https://www.wiktionary.org/) (CC
 BY-SA 4.0), it links to the Wiktionary entry it draws on.
+
+The scripts in [`tools/`](tools/) are licensed under the MIT License; see
+[tools/LICENSE](tools/LICENSE).

@@ -11,6 +11,13 @@ desktop.ini
 # Local drop folder for material to show Claude (not part of the repo)
 /tmp/
 
+# Audio recordings: kept local until it's decided whether they are published
+/audio/
+
+# Python virtual environment for the scripts in tools/
+.venv/
+__pycache__/
+
 # Claude Code: personal, machine-local files
 .claude/settings.local.json
 CLAUDE.local.md

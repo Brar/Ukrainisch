@@ -301,6 +301,13 @@ When a decision is made, move it to "Decisions" above.
   next to that course, which already covers much of A1. Build the A1 notes into
   that edition anyway (they can be suspended by tag), or leave out what the
   course already teaches?
+- Conventions used for `vocab/alltag.tsv`, not yet confirmed by the user:
+  - Every polysyllabic Ukrainian word in `uk`, `uk_synonyms` and `uk_note`
+    has its stress checked against the stress sources in "Decisions". For an
+    inflected form in a phrase (`почува́юся`), `source` cites the entry of its
+    lemma.
+  - Phrases and notes in Ukrainian that Claude wrote get a `review` comment
+    asking for a native check, even when every word's stress is confirmed.
 - Ukrainian audio: a native speaker (same script) or text-to-speech?
 - Should the recordings be published in the repo? `audio/` is gitignored until
   this is decided.

@@ -9,6 +9,8 @@ Ukrainian and Ukrainian → German).
 - Infection prevention and control (Infektionsprävention und Krankenhaushygiene)
 - Microbiology
 - Antimicrobial stewardship (Antibiotic Stewardship, ABS)
+- Everyday communication from CEFR level A1 to B2, focused on hospital,
+  epidemiology, IPC and AMR settings
 
 ## Terminology sources
 

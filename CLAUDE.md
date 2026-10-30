@@ -247,8 +247,10 @@ When a decision is made, move it to "Decisions" above.
     if Wiktionary lists one (`Blute`, `Urine`; `Stühle` only means chairs).
   - When Wiktionary has no entry, Ukrainian stress is taken from the
     *Словник української мови* (1970–80) via slovnyk.ua and cited in
-    `source`. Words with no stress source at all get no stress mark and a
-    `review` comment.
+    `source`. If slovnyk.ua has no stress for the word, goroh.pp.ua
+    (`https://goroh.pp.ua/Тлумачення/<word>`) is used and cited instead.
+    Words with no stress source at all get no stress mark and a `review`
+    comment.
   - The euphonic preposition follows the orthography: `із` between two
     consonants (`мазо́к із но́са`).
 - Ukrainian audio: a native speaker (same script) or text-to-speech?

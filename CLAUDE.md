@@ -9,8 +9,8 @@ vocabulary, with a focus on:
 - Microbiology
 - Antimicrobial stewardship (Antibiotic Stewardship, ABS)
 
-A second part covers everyday communication up to CEFR level B1, from A1
-basics onwards, with a focus on talking with patients, relatives and
+A second part covers everyday communication from CEFR level A1 to B2, built
+up level by level, with a focus on talking with patients, relatives and
 colleagues in hospital, epidemiology, IPC and AMR settings (see
 `docs/alltag-szenarien.md`).
 
@@ -146,7 +146,8 @@ German. Notes on German (usage) are in Ukrainian.
 - English references: WHO, ECDC and CDC for infection prevention; EUCAST for
   susceptibility testing.
 - Everyday language (`Ukrainisch::Alltag`): the vocabulary selection is
-  checked against the Goethe-Institut/ÖSD word lists (A1, B1) for German, and
+  checked against the Goethe-Institut/ÖSD word lists (A1, B1) for German
+  (there is no official list for B2; *Profile Deutsch* covers it), and
   for Ukrainian against the state standard «Українська мова як іноземна.
   Рівні загального володіння А1 – С2» (НКСДМ decision No. 279 of 29 August
   2024, under revision in 2026) and the A1 lexical minimum «1000 і 1 слово»
@@ -223,10 +224,21 @@ German. Notes on German (usage) are in Ukrainian.
   `thema::probenmaterial`), and a note can carry several of them. Each note
   goes in exactly one deck, the topic it belongs to most.
 - Everyday communication lives in the deck `Ukrainisch::Alltag`, a sibling of
-  `Ukrainisch::Medizin`, with the word list `vocab/alltag.tsv`. It targets
-  CEFR B1 and includes A1 basics. Its content is selected from the scenario
-  list in `docs/alltag-szenarien.md` (our own can-do statements, ordered by
-  level), not from a general frequency list.
+  `Ukrainisch::Medizin`, with the word list `vocab/alltag.tsv`. It grows level
+  by level from A1 to B2 (A1 → A2 → B1 first, then B2). Its content is
+  selected from the scenario list in `docs/alltag-szenarien.md` (our own
+  can-do statements, ordered by level), not from a general frequency list.
+- `Ukrainisch::Alltag` has one subdeck per CEFR level: `::A1`, `::A2`, `::B1`,
+  `::B2`. They sort in learning order, so studying the parent deck with the
+  new-card gather order "Deck" introduces A1 before A2 and so on, and a
+  learner can also study one level on its own.
+  - Every row in `vocab/alltag.tsv` carries exactly one level tag
+    (`niveau::a1` … `niveau::b2`): the level of the first scenario that needs
+    it. The build puts the note in the matching subdeck.
+  - The level is a property of the word list, not a field, so adding a level
+    later needs no change to the note type (no forced full sync).
+  - A note's level should not change once it has been released: re-importing
+    a package updates notes but doesn't move existing cards to another deck.
 - The word lists in the repo (`vocab/*.tsv`) are the source of truth. A build
   script in `tools/` generates two Anki packages (`.apkg`) from them:
   - an edition for German speakers learning Ukrainian, which the user imports
@@ -269,14 +281,16 @@ When a decision is made, move it to "Decisions" above.
 
 - Tag vocabulary: which `thema::` tags, and whether to add source or status
   tags? The pilot uses `thema::probenmaterial` and `thema::medizinprodukt`.
-  Proposed for `Ukrainisch::Alltag`: a CEFR level tag on every note
-  (`niveau::a1`, `niveau::a2`, `niveau::b1`) and a scenario tag
-  (`szenario::isolation`, …) matching `docs/alltag-szenarien.md`.
+  `Ukrainisch::Alltag` uses `niveau::` tags (see "Decisions"); proposed in
+  addition: a scenario tag (`szenario::isolation`, …) matching
+  `docs/alltag-szenarien.md`.
 - Grammar: the vocabulary is shared, but each audience needs different grammar
   (Ukrainian cases, aspect and verbs of motion for German speakers; German
   articles, word order, Perfekt and Sie form for Ukrainian speakers). Proposed:
   rule cards with their own note type per edition, like the transliteration
-  rule cards, kept outside `vocab/*.tsv`. Format and deck still open.
+  rule cards, kept outside `vocab/*.tsv`, with the same level subdecks
+  (A1 … B2) so grammar and vocabulary advance together. Format and deck name
+  still open.
 - Phrases in `vocab/alltag.tsv`: proposed that a row may hold a whole phrase
   (`Bitte desinfizieren Sie sich die Hände.`), with `de_plural` and
   `uk_gender` empty, and that phrases addressed to patients use the formal

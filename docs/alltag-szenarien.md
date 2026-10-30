@@ -6,10 +6,11 @@ the CEFR, *Profile Deutsch* and the Ukrainian state standard «Українсь�
 як іноземна. Рівні загального володіння А1 – С2». A word or phrase belongs in
 the deck if one of these scenarios needs it.
 
-The target is B1. A1 and A2 build the basics that the hospital scenarios rely
-on. Each scenario has a tag (`szenario::…`), and every note also gets the
-level of the first scenario that needs it (`niveau::a1`, `niveau::a2`,
-`niveau::b1`).
+The deck grows level by level: A1 → A2 → B1 first, then B2. A1 and A2 build
+the basics that the hospital scenarios rely on. Each scenario has a tag
+(`szenario::…`), and every note also gets the level of the first scenario
+that needs it (`niveau::a1` … `niveau::b2`), which decides its subdeck
+(`Ukrainisch::Alltag::A1` … `::B2`).
 
 "I" is a health worker (doctor, nurse, IPC staff, public-health staff).
 "You" is a patient, relative, visitor or colleague. Patients are addressed
@@ -58,6 +59,19 @@ level descriptors yet.
 | `szenario::sorgen` | respond to worries, fear and complaints with empathy, and reassure without promising too much. |
 | `szenario::schriftlich` | understand and write short texts: a door sign, a patient information sheet, a short e-mail. |
 
+## B2: discussion, persuasion, professional exchange
+
+| Tag | I can … |
+| --- | --- |
+| `szenario::risiko` | explain risk and uncertainty: what is known, what isn't, and what the probabilities mean for this person. |
+| `szenario::ablehnung` | handle a refusal (of isolation, a test, a vaccination): listen to the reasons, argue my case and look for a solution together. |
+| `szenario::sanierung` | counsel a patient on decolonisation and on what colonisation means for them and their household in the long run. |
+| `szenario::surveillance` | present and discuss surveillance data (cases, rates, incidence, trends) in a team meeting. |
+| `szenario::ausbruchsteam` | take part in an outbreak team meeting: report findings, propose measures, weigh pros and cons. |
+| `szenario::visite` | take part in a ward round or infectious diseases consultation on antibiotic therapy (indication, choice, duration, de-escalation). |
+| `szenario::oeffentlichkeit` | explain a public-health situation to the public or the press in clear, calm language. |
+| `szenario::fachtext` | understand the main points of a guideline or a professional article and summarise them for colleagues. |
+
 Note on `szenario::antibiotika`: the current advice is to take antibiotics
 exactly as prescribed, not "always finish the pack". Cards must not teach the
 old message.
@@ -71,3 +85,4 @@ Rule cards follow the same levels. The two editions need different rules:
 | A1 | articles and gender; present tense; verb in second position; W- and yes/no questions; Sie form; accusative; negation with *nicht* / *kein*; *können*, *müssen*, *dürfen* | noun gender; present tense, both conjugations; personal pronouns and formal ви; nominative and accusative; questions with чи; no "to be" in the present; possessives; "у мене болить …" |
 | A2 | dative; prepositions with dative and accusative; Perfekt; imperative (Sie form); separable verbs; *weil*, *dass*, *wenn*; comparison | all seven cases, including the vocative (пане, пані); past tense with gender agreement; future tense; imperative (ви form: сідайте); треба, можна, не можна; first verbs of motion (йти / їхати); first aspect pairs |
 | B1 | Präteritum of common verbs; passive (*Die Probe wird abgenommen*); Konjunktiv II for advice and politeness (*würde*, *könnte*, *sollte*); relative clauses; *um … zu*, *damit*, *obwohl*; *bevor*, *nachdem*, *während*; adjective endings | aspect in all tenses; prefixed verbs of motion; conditional with би; clauses with тому що, щоб, якщо, коли; numerals with nouns in all cases; impersonal constructions and short forms on signs (зачинено) |
+| B2 | passive with modal verbs; Konjunktiv I for reported speech; nominal style (*nach Abschluss der Therapie*); participle attributes (*die isolierten Patienten*); two-part connectors (*je … desto*, *sowohl … als auch*); *werden* for assumptions | active and passive participles; adverbial participles (дієприслівники); impersonal passive in -но/-то (зроблено); reported speech; complex connectors (незважаючи на те що, у зв'язку з тим що); formal and official register |

@@ -230,6 +230,10 @@ German. Notes on German (usage) are in Ukrainian.
   (`https://goroh.pp.ua/Тлумачення/<word>`) is used. The source is always
   cited in `source`. Words with no stress source at all get no stress mark and
   a `review` comment.
+- The euphonic preposition follows the orthography: `із` between two
+  consonants (`мазо́к із но́са`).
+- `de_plural` is `–` when the plural isn't used in the card's sense, even if
+  Wiktionary lists one (`Blute`, `Urine`; `Stühle` only means chairs).
 - Grammatical gender is colour-coded in both languages and both editions, with
   one colour scheme for masculine, feminine, neuter and plural-only. German
   gender comes from the article, Ukrainian gender from `uk_gender`. It is hard
@@ -248,11 +252,6 @@ When a decision is made, move it to "Decisions" above.
 
 - Tag vocabulary: which `thema::` tags, and whether to add source or status
   tags? The pilot uses `thema::probenmaterial` and `thema::medizinprodukt`.
-- Conventions used in the pilot, not yet confirmed by the user:
-  - `de_plural` is `–` when the plural isn't used in the card's sense, even
-    if Wiktionary lists one (`Blute`, `Urine`; `Stühle` only means chairs).
-  - The euphonic preposition follows the orthography: `із` between two
-    consonants (`мазо́к із но́са`).
 - Ukrainian audio: a native speaker (same script) or text-to-speech?
 - Should the recordings be published in the repo? `audio/` is gitignored until
   this is decided.

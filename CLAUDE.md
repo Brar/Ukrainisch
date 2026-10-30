@@ -102,7 +102,10 @@ German. Notes on German (usage) are in Ukrainian.
     `review` cell is empty; the build will enforce this.
   - `tags`: hierarchical topic tags, space-separated (`thema::probenmaterial`).
   - `de`: dictionary form; nouns with their article (`der Erreger`).
-  - `de_plural`: plural with article, or `–` if there is none.
+  - `de_plural`: plural with article, or `–` if there is none. For a
+    plural-only noun it repeats the headword (`die Eltern` in both `de` and
+    `de_plural`); the build reads this as plural-only for the gender colour.
+    `–` never means plural-only, so `die Hygiene` with `–` stays feminine.
   - `de_ipa`: optional IPA, taken from Wiktionary (entry URL in `source`).
   - `de_synonyms`, `de_abbr`
   - `de_note`: a note on German, written in Ukrainian.

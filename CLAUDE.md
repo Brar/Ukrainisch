@@ -125,6 +125,8 @@ German. Notes on German (usage) are in Ukrainian.
     reviewers share. It is never built into cards. Whoever resolves a
     question fixes the row and deletes the comment. Anything that can't be
     verified during a session goes here, so it isn't forgotten.
+    Questions about Ukrainian words or style always go here, for the
+    reviewers, and are not put to the user.
 - Computed by the build, never stored in the word list:
   - audio (`audio/de/<id>.mp3`, `audio/uk/<id>.mp3`)
   - the KMU 2010 transliteration

@@ -29,10 +29,16 @@ Early setup; no cards published yet.
 
 ## How the cards are made
 
-Cards are maintained in Anki desktop. They are created and edited with the help
-of [Claude Code](https://claude.com/claude-code) through the
-[AnkiMCP add-on](https://github.com/ankimcp/anki-mcp-server-addon). The German
-audio is recorded with [`tools/record_audio.py`](tools/record_audio.py).
+The word lists in [`vocab/`](vocab/) are the source of truth: one
+tab-separated file per deck, edited with the help of
+[Claude Code](https://claude.com/claude-code). A build script in
+[`tools/`](tools/) will generate two Anki packages (`.apkg`) from them, one for
+German speakers learning Ukrainian and one for Ukrainian speakers learning
+German. Every note has a stable ID, so importing a rebuilt package updates the
+existing cards and keeps their review history. The
+[AnkiMCP add-on](https://github.com/ankimcp/anki-mcp-server-addon) is used to
+check the result in Anki. The German audio is recorded with
+[`tools/record_audio.py`](tools/record_audio.py).
 
 ## Disclaimer
 

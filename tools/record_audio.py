@@ -5,16 +5,17 @@ Reads a tab-separated word list with a header row that contains an `id`
 column and a text column (default: `de`), shows one entry at a time, records
 it from the microphone, trims the silence, evens out the loudness and saves
 it as `<out>/<id>.mp3`. Entries that already have a file are skipped, so an
-interrupted session simply continues where it stopped.
+interrupted session simply continues where it stopped. IDs are checked for
+uniqueness across all `.tsv` files in the word list's folder.
 
 Setup (once, from the repository root):
     py -m venv .venv
     .venv\\Scripts\\python -m pip install -r tools\\requirements.txt
 
 Usage:
-    .venv\\Scripts\\python tools\\record_audio.py vocab\\pilot.tsv
-    .venv\\Scripts\\python tools\\record_audio.py vocab\\pilot.tsv --redo mikro-urin
-    .venv\\Scripts\\python tools\\record_audio.py vocab\\pilot.tsv --column uk --out audio\\uk
+    .venv\\Scripts\\python tools\\record_audio.py vocab\\mikrobiologie.tsv
+    .venv\\Scripts\\python tools\\record_audio.py vocab\\mikrobiologie.tsv --redo urin
+    .venv\\Scripts\\python tools\\record_audio.py vocab\\mikrobiologie.tsv --column uk --out audio\\uk
     .venv\\Scripts\\python tools\\record_audio.py --list-devices
 """
 
@@ -29,7 +30,7 @@ import numpy as np
 import sounddevice as sd
 import soundfile as sf
 
-ID_PATTERN = re.compile(r"^[A-Za-z0-9_-]+$")
+ID_PATTERN = re.compile(r"^[a-z0-9-]+$")
 
 FRAME_SECONDS = 0.01        # analysis frame for silence detection
 SPEECH_BELOW_PEAK_DB = 35   # frames quieter than this below the loudest frame count as silence
@@ -59,11 +60,26 @@ def read_word_list(path, column):
     for number, row in enumerate(rows, start=2):
         entry_id = (row["id"] or "").strip()
         if not ID_PATTERN.match(entry_id):
-            sys.exit(f"{path}, line {number}: id '{entry_id}' may only contain A-Z, a-z, 0-9, _ and -")
+            sys.exit(f"{path}, line {number}: id '{entry_id}' may only contain a-z, 0-9 and -")
         if entry_id in seen:
             sys.exit(f"{path}, line {number}: duplicate id '{entry_id}'")
         seen.add(entry_id)
+    check_ids_across_files(path)
     return [(row["id"].strip(), (row[column] or "").strip()) for row in rows]
+
+
+def check_ids_across_files(path):
+    """IDs are note GUIDs and audio file names, so they must be unique across all word lists."""
+    owners = {}
+    for other in sorted(Path(path).parent.glob("*.tsv")):
+        with open(other, encoding="utf-8", newline="") as f:
+            for number, row in enumerate(csv.DictReader(f, delimiter="\t"), start=2):
+                entry_id = (row.get("id") or "").strip()
+                if not entry_id:
+                    continue
+                if entry_id in owners:
+                    sys.exit(f"{other}, line {number}: id '{entry_id}' is already used in {owners[entry_id]}")
+                owners[entry_id] = f"{other}, line {number}"
 
 
 def record_take(samplerate, device, channel):

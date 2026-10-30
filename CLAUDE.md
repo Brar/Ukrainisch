@@ -151,8 +151,10 @@ German. Notes on German (usage) are in Ukrainian.
   for Ukrainian against the state standard «Українська мова як іноземна.
   Рівні загального володіння А1 – С2» (НКСДМ decision No. 279 of 29 August
   2024, under revision in 2026) and the A1 lexical minimum «1000 і 1 слово»
-  (HU Berlin, 2024). These lists are used for checking only: single words may
-  be taken, but not the lists as a whole, and not their example sentences.
+  (HU Berlin, 2024). These lists are used only to look up single words: the
+  scenarios decide what goes in, not the lists. Don't copy the lists, their
+  selection or their example sentences, and don't compare our word list
+  against them systematically (no coverage scripts, no copies in the repo).
 - Use standard modern Ukrainian (2019 orthography). Avoid Russisms and calques
   from Russian.
 

@@ -294,6 +294,8 @@ When a decision is made, move it to "Decisions" above.
   `Ukrainisch::Alltag` uses `niveau::` tags (see "Decisions"); proposed in
   addition: a scenario tag (`szenario::isolation`, …) matching
   `docs/alltag-szenarien.md`.
+  Children's words (for paediatrics) carry `register::kindersprache`, and
+  their notes name the word adults use.
 - Grammar: the vocabulary is shared, but each audience needs different grammar
   (Ukrainian cases, aspect and verbs of motion for German speakers; German
   articles, word order, Perfekt and Sie form for Ukrainian speakers). Proposed:

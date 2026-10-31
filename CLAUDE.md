@@ -1,9 +1,9 @@
-# Ukrainisch — German ⇄ Ukrainian medical Anki cards
+# Ukrainisch — German ⇄ Ukrainian ⇄ English medical Anki cards
 
 ## Purpose
 
-Bidirectional Anki cards (German → Ukrainian and Ukrainian → German) for medical
-vocabulary, with a focus on:
+Anki cards for medical vocabulary in German, Ukrainian and English, with a
+focus on:
 
 - Infection prevention and control (IPC; Infektionsprävention / Krankenhaushygiene)
 - Microbiology
@@ -14,13 +14,26 @@ up level by level, with a focus on talking with patients, relatives and
 colleagues in hospital, epidemiology, IPC and AMR settings (see
 `docs/alltag-szenarien.md`).
 
-Every note must produce a card in each direction.
+All three languages are first-class: each has its own headword, synonyms,
+IPA, example and audio in the word list. There are four editions, all
+generated from the same word lists, and each note produces a card in both
+directions of its edition's language pair:
 
-There are two audiences: German speakers learning Ukrainian, and Ukrainian
-speakers learning German. Each gets its own edition, generated from the same
-word list. Information *about* a language is for learners *of* that language,
-so it's written in their language. Notes on Ukrainian (gender, usage) are in
-German. Notes on German (usage) are in Ukrainian.
+| Edition | Audience |
+| --- | --- |
+| German → Ukrainian | German speakers learning Ukrainian (the user's own collection) |
+| Ukrainian → German | Ukrainian speakers learning German |
+| Ukrainian → English | Ukrainian speakers learning English |
+| English → Ukrainian | English speakers learning Ukrainian (e.g. international colleagues) |
+
+There is no German ⇄ English edition unless someone asks for one.
+
+Information *about* a language is for learners *of* that language, so it's
+written in their language. Notes are therefore written per language pair:
+`<about>_note_<written in>`. `de_note_uk` is a note on German, in Ukrainian;
+`uk_note_de` is a note on Ukrainian, in German; `uk_note_en` is a note on
+Ukrainian, in English; `en_note_uk` is a note on English, in Ukrainian. A note
+column exists only for pairs that have an edition.
 
 ## Repository and licensing
 
@@ -84,6 +97,52 @@ German. Notes on German (usage) are in Ukrainian.
   - `--list-devices`, `--device` and `--channel` select the input. The user's
     interface is a Steinberg UR22mkII with two inputs.
   - It is interactive, so the user runs it in their own terminal, not Claude.
+- `tools/recorder/index.html` is a browser page for checking and recording in
+  one go, for people who don't install anything (e.g. Ukrainian friends on a
+  phone).
+  - It loads `vocab/*.tsv` from the same site, so it must be served over HTTPS
+    from the repository: GitHub Pages (Settings → Pages → Deploy from branch
+    `main`, folder `/`) gives
+    <https://brar.github.io/Ukrainisch/tools/recorder/>. Opened as a local
+    file, it can't fetch the lists; they can then be opened with the file
+    picker on the page instead.
+  - The reader chooses a language, a topic (word list · level · scenario or
+    `thema::` tag) and a part of at most 20 entries. By default only open
+    entries are shown; "show finished entries too" allows re-checking and
+    re-recording.
+  - Per entry it shows the main form, synonyms, the note and example written
+    in the reader's language, and the open review items for that language
+    (`UK:` for Ukrainian readers, `DE:` for German readers, `EN:` for English
+    readers, items without a prefix for everyone, and earlier readers'
+    comments). The reader
+    confirms ("all correct") or writes a correction, and records.
+  - Ukrainian is shown without stress marks by default, so the reader isn't
+    steered by our marks; a different stress in the recording points to a
+    possible error.
+  - Quality: browser processing (echo cancellation, noise suppression,
+    automatic gain) is switched off and takes are stored as uncompressed WAV.
+    After each take the page warns about clipping, a too quiet voice,
+    background noise and takes longer than 10 s.
+  - A take or check remembers the text it was made for. If the entry's text
+    changes later, the take is marked as outdated and must be recorded again.
+  - Everything stays in the browser (IndexedDB) until it is exported as a zip
+    with WAV files and `manifest.tsv`. Nothing is uploaded.
+  - The interface is in German, Ukrainian and English, and so is the choice of
+    recording language. The Ukrainian interface text was written by Claude
+    and still needs a native check.
+- `tools/import_recordings.py <zip>…` imports such a zip:
+  - takes are processed like `record_audio.py` and saved as
+    `audio/<lang>/<id>.mp3` (existing files are kept unless `--overwrite`);
+  - a confirmation removes the review items the reader was shown from the
+    `review` column, and a comment is added to it as
+    `Reader <name> (<lang>): …`;
+  - takes and checks whose text no longer matches the word list are skipped;
+  - at the end it lists draft rows without open review items, whose status
+    can now be set to `ok`.
+  The review item format is shared with the page: items start with `UK:`,
+  `DE:`, `EN:`, `Build:` or `Reader <name> (<lang>):`.
+- `tools/audio_processing.py` holds the shared processing (trim silence,
+  normalise loudness, MP3), so both ways of recording sound the same.
 
 ## Word list format
 
@@ -108,30 +167,85 @@ German. Notes on German (usage) are in Ukrainian.
     `–` never means plural-only, so `die Hygiene` with `–` stays feminine.
   - `de_ipa`: optional IPA, taken from Wiktionary (entry URL in `source`).
   - `de_synonyms`, `de_abbr`
-  - `de_note`: a note on German, written in Ukrainian.
+  - `de_verb_forms`: for verbs, the principal parts: 3rd person singular
+    present, preterite, perfect (`hustet, hustete, hat gehustet`). Taken from
+    Wiktionary.
+  - `de_paradigm`: the full paradigm as a reference table, filled
+    automatically from Wiktionary. Nouns: `N der Arzt / die Ärzte; G des
+    Arztes / der Ärzte; D dem Arzt / den Ärzten; A den Arzt / die Ärzte`
+    (singular / plural). Verbs: `pres huste, hustest, hustet; past hustete;
+    perf hat gehustet; imp huste / hustet; subj2 hustete`.
+  - `de_note_uk`: a note on German, written in Ukrainian.
   - `uk`: dictionary form with stress marks.
   - `uk_gender`: `m`, `f`, `n` or `pl` (plural-only).
+  - `uk_plural`: nominative plural with stress marks, for nouns. Same rules as
+    `de_plural`: `–` if the plural isn't used in the card's sense; for a
+    plural-only noun it repeats the headword. Taken from Wiktionary.
+  - `uk_genitive`: genitive singular with stress marks, for nouns (genitive
+    plural for plural-only nouns); it shows the declension class and stress
+    shifts. Multi-word terms are declined as a phrase (adjectives agree, a
+    complement such as `із зі́ва` stays). Taken from goroh.pp.ua.
+  - `uk_ipa`: optional IPA, taken from Wiktionary (entry URL in `source`).
+  - `uk_aspect`: for verbs, the aspect of the headword (`impf`, `pf` or
+    `biasp`), then a colon and its aspect partner(s) with stress marks,
+    separated by `, `: `impf: кашляну́ти`, `pf: захво́рювати, хворі́ти`. Just
+    `impf` if there is no partner. Taken from Wiktionary. The build shows the
+    labels in the audience's language.
+  - `uk_present`: for verbs, 1st and 2nd person singular of the present tense
+    (of the simple future for perfective verbs), with stress marks:
+    `говорю́, гово́риш`. It shows the conjugation class and stress shifts.
+    Taken from goroh.pp.ua.
+  - `uk_paradigm`: the full paradigm as a reference table, filled
+    automatically from goroh.pp.ua (first variant of each form only). Nouns:
+    `N о́ко / о́чі; G о́ка / оче́й; D …; A …; I …; L …; V …` (singular / plural;
+    plural only for plural-only nouns). Verbs: `pres говорю́, гово́риш,
+    гово́рить / гово́римо, гово́рите, гово́рять; past говори́в, говори́ла,
+    говори́ло, говори́ли; imp говори́ / говорі́ть` (`fut` instead of `pres` for
+    perfective verbs).
   - `uk_synonyms`: standard synonyms in real use.
   - `uk_abbr`
   - `uk_nonstandard`: common non-standard spellings (see "Ukrainian spelling").
-  - `uk_note`: a note on Ukrainian, written in German.
-  - `en`: the standard clinical English term, a bridge for English-speaking
-    peers. It uses British spelling (`faeces`), as WHO and ECDC do. It is shown as a secondary line on the back of every card in both
-    editions. It never appears on the front (it would give away cognates) and
-    never gets a card direction of its own.
-  - `example_de`, `example_uk`: optional example sentences, in our own wording.
+  - `uk_note_de`: a note on Ukrainian, written in German.
+  - `uk_note_en`: a note on Ukrainian, written in English.
+  - `en`: the English headword, a real answer that can be learned (no
+    explanations in it; those go in a note or a hint in parentheses). Nouns
+    without an article. British spelling (`faeces`, `oesophagus`), as WHO and
+    ECDC use it. In the editions with English it is the language learned. In
+    the German ⇄ Ukrainian editions it is shown as a secondary line on the
+    back of the card, as a bridge for English-speaking peers; it never appears
+    on the front there (it would give away cognates).
+    Both roles use the same cell, so `en` holds the standard term colleagues
+    use: the clinical term in the medical lists (`pharynx`), plain everyday
+    English in `Ukrainisch::Alltag` (`throat`). The other register goes into
+    `en_synonyms`, not into the headword.
+  - `en_plural`: plural, for nouns. Same rules as `de_plural`: `–` if the
+    plural isn't used in the card's sense; for a plural-only or plural-form
+    headword (`lungs`, `stairs`) it repeats the headword. Taken from
+    Wiktionary.
+  - `en_ipa`: optional British (Received Pronunciation) IPA, taken from
+    Wiktionary (entry URL in `source`).
+  - `en_verb_forms`: for verbs, simple past and past participle
+    (`ate, eaten`; `coughed, coughed`). Taken from Wiktionary.
+  - `en_synonyms`: synonyms in real use, including the US form where it
+    differs (`diarrhea`, `acetaminophen`), so it is accepted but not taught as
+    the main form.
+  - `en_abbr`
+  - `en_note_uk`: a note on English, written in Ukrainian.
+  - `example_de`, `example_uk`, `example_en`: optional example sentences, in
+    our own wording.
   - `source`: references, e.g. Wiktionary entry URLs. Required whenever text is
     taken from Wiktionary.
   - `review`: open questions for reviewers, e.g. unverified stress, English
     wording to confirm, or Ukrainian text Claude wrote that needs a native
-    check. It is written in English, the language German and Ukrainian
-    reviewers share. It is never built into cards. Whoever resolves a
+    check. It is written in English, the language all reviewers share. Each
+    item starts with the language its reviewer needs: `UK:`, `DE:` or `EN:`
+    (general items have no prefix; `Build:` items are for the build). It is never built into cards. Whoever resolves a
     question fixes the row and deletes the comment. Anything that can't be
     verified during a session goes here, so it isn't forgotten.
     Questions about Ukrainian words or style always go here, for the
     reviewers, and are not put to the user.
 - Computed by the build, never stored in the word list:
-  - audio (`audio/de/<id>.mp3`, `audio/uk/<id>.mp3`)
+  - audio (`audio/de/<id>.mp3`, `audio/uk/<id>.mp3`, `audio/en/<id>.mp3`)
   - the KMU 2010 transliteration
   - Ukrainian without stress marks
   - gender labels in each audience's language
@@ -149,7 +263,9 @@ German. Notes on German (usage) are in Ukrainian.
 - Ukrainian references: orders and protocols of the МОЗ України, Центр
   громадського здоров'я України, and WHO materials in Ukrainian.
 - English references: WHO, ECDC and CDC for infection prevention; EUCAST for
-  susceptibility testing.
+  susceptibility testing; NHS patient information for the everyday words
+  patients use. Use British English; US variants go into `en_synonyms` or a
+  note.
 - Everyday language (`Ukrainisch::Alltag`): the vocabulary selection is
   checked against the Goethe-Institut/ÖSD word lists (A1, B1) for German
   (there is no official list for B2; *Profile Deutsch* covers it), and
@@ -160,6 +276,8 @@ German. Notes on German (usage) are in Ukrainian.
   scenarios decide what goes in, not the lists. Don't copy the lists, their
   selection or their example sentences, and don't compare our word list
   against them systematically (no coverage scripts, no copies in the repo).
+  The same applies to English learner lists (e.g. the *English Vocabulary
+  Profile*): single-word lookups only.
 - Use standard modern Ukrainian (2019 orthography). Avoid Russisms and calques
   from Russian.
 
@@ -198,8 +316,8 @@ German. Notes on German (usage) are in Ukrainian.
   stress marks removed first. It is never typed by hand. The `latin_translit`
   column of the lab CSV doesn't follow KMU 2010 (about half its rows use the
   older `ya`/`yu` style) and is discarded.
-- It is for German speakers learning Ukrainian. Ukrainian speakers learning
-  German don't need it.
+- It is for German and English speakers learning Ukrainian. Ukrainian
+  speakers learning German or English don't need it.
 - It is for writing, not pronunciation: it shows no stress, and г is written
   `h`. Stress marks and audio cover pronunciation.
 - The rules are taught with about 40 rule cards in a separate deck
@@ -247,10 +365,13 @@ German. Notes on German (usage) are in Ukrainian.
   - A note's level should not change once it has been released: re-importing
     a package updates notes but doesn't move existing cards to another deck.
 - The word lists in the repo (`vocab/*.tsv`) are the source of truth. A build
-  script in `tools/` generates two Anki packages (`.apkg`) from them:
-  - an edition for German speakers learning Ukrainian, which the user imports
-    into `Ukrainisch::Medizin::*`;
-  - an edition for Ukrainian speakers learning German, built for publishing.
+  script in `tools/` generates one Anki package (`.apkg`) per edition (see
+  "Purpose"): German → Ukrainian (which the user also imports into
+  `Ukrainisch::*`), Ukrainian → German, Ukrainian → English and English →
+  Ukrainian.
+
+  All four editions are published. None is only for private use. The deck
+  names of the published editions are still open.
 
   Each edition has its own note type and card templates, and its labels and
   notes are in its audience's language. Every note has a stable ID, which the
@@ -258,14 +379,24 @@ German. Notes on German (usage) are in Ukrainian.
   existing notes and keeps the review history. The MCP server is used for
   checking the result, not for adding notes.
 - Ukrainian is stored with stress marks (combining acute, U+0301). They are
-  shown in the edition for German speakers and removed in the edition for
-  Ukrainian speakers.
+  shown in the editions for learners of Ukrainian (German → Ukrainian,
+  English → Ukrainian) and removed in the editions for Ukrainian speakers.
 - Ukrainian stress is taken from Wiktionary. When Wiktionary has no entry, it
   is taken from the *Словник української мови* (1970–80) via slovnyk.ua. If
   slovnyk.ua has no stress for the word, goroh.pp.ua
   (`https://goroh.pp.ua/Тлумачення/<word>`) is used. The source is always
   cited in `source`. Words with no stress source at all get no stress mark and
   a `review` comment.
+- Ukrainian inflected forms (`uk_plural`, `uk_genitive`, `uk_present`,
+  `uk_paradigm`) come from goroh.pp.ua (Словозміна). A goroh page lists
+  several lexemes, so only the table whose base form matches the headword
+  exactly, including its stress, is used. Where goroh has no such table,
+  Wiktionary's inflection table is used. For nouns the genitive is checked
+  against Wiktionary's headword line, which picks the right one of several
+  tables (standard masculine `біль, бо́лю`, not the colloquial feminine). Only
+  regular hard adjectives in `-ий` that neither source has are declined by
+  rule. Where goroh and Wiktionary disagree on a form, the row gets a `UK:`
+  review item instead of a silent choice.
 - The euphonic preposition follows the orthography: `із` between two
   consonants (`мазо́к із но́са`).
 - `de_plural` is `–` when the plural isn't used in the card's sense, even if
@@ -273,7 +404,20 @@ German. Notes on German (usage) are in Ukrainian.
 - When two notes share a headword, a short hint in parentheses tells them
   apart: `der Hals (innen)` (`го́рло`) and `der Hals (außen)` (`ши́я`). The
   hint is shown on the card but not spoken in the recording.
-- Grammatical gender is colour-coded in both languages and both editions, with
+- Inflection is trained in Anki, not only looked up:
+  - Form cards: extra card templates in each edition's note type ask for
+    the key forms (`uk_plural`, `uk_genitive`, `uk_present`, `uk_aspect`,
+    `de_plural`, `de_verb_forms`, `en_plural`, `en_verb_forms`). Anki only
+    creates a card when the field is filled. They go to their own subdeck
+    via a deck override, so they can be suspended or started later.
+  - Paradigms (`de_paradigm`, `uk_paradigm`) are shown as a reference table
+    on the back of the card. They are never drilled form by form, which
+    would mean thousands of near-identical cards.
+  - Cases and their use are trained in context (cloze cards in the grammar
+    module); complete paradigms are drilled only for a few model words per
+    declension or conjugation type.
+- Grammatical gender is colour-coded for German and Ukrainian in every edition
+  that shows them (English has no grammatical gender), with
   one colour scheme for masculine, feminine, neuter and plural-only. German
   gender comes from the article, Ukrainian gender from `uk_gender`. It is hard
   for learners in both directions, and the two languages often disagree (`das
@@ -282,8 +426,18 @@ German. Notes on German (usage) are in Ukrainian.
   colour alone.
 - German audio is recorded by the user with `tools/record_audio.py` and saved
   as `audio/de/<ID>.mp3`. Nouns are recorded with their article ("die
-  Blutkultur"). Ukrainian audio will follow later; the same script can record
-  it (`--column uk --out audio/uk`).
+  Blutkultur"). Ukrainian and English audio will follow later; the same script
+  can record them (`--column uk --out audio/uk`, `--column en --out
+  audio/en`).
+- Audio is switched on or off per language and per package: German, Ukrainian
+  and English audio each have their own switch in the build. A package for the
+  user's own collection includes all recordings there are. A package for
+  publishing includes a language's audio only when every speaker of it has
+  agreed in writing to publication under CC BY-SA 4.0. Otherwise that package
+  ships without audio for that language.
+- No audio with a wrong pronunciation is published. Text-to-speech is never
+  used without a native speaker listening to every file, and files that fail
+  that check are dropped.
 
 ## Open decisions
 
@@ -296,13 +450,15 @@ When a decision is made, move it to "Decisions" above.
   `docs/alltag-szenarien.md`.
   Children's words (for paediatrics) carry `register::kindersprache`, and
   their notes name the word adults use.
-- Grammar: the vocabulary is shared, but each audience needs different grammar
-  (Ukrainian cases, aspect and verbs of motion for German speakers; German
-  articles, word order, Perfekt and Sie form for Ukrainian speakers). Proposed:
-  rule cards with their own note type per edition, like the transliteration
-  rule cards, kept outside `vocab/*.tsv`, with the same level subdecks
-  (A1 … B2) so grammar and vocabulary advance together. Format and deck name
-  still open.
+- Grammar module: the vocabulary is shared, but each audience needs different
+  grammar (Ukrainian cases, aspect and verbs of motion for German and English
+  speakers; German articles, word order, Perfekt and Sie form, and English
+  tenses, for Ukrainian speakers). Proposed: rule cards plus cloze cards that
+  practise each rule in a phrase from our scenarios (`У ме́не боли́ть
+  {{голова́}}`), and full paradigms for a few model words per declension or
+  conjugation type, with their own note type per edition, kept outside
+  `vocab/*.tsv`, in the same level subdecks (A1 … B2) so grammar and
+  vocabulary advance together. Format and deck name still open.
 - Phrases in `vocab/alltag.tsv`: proposed that a row may hold a whole phrase
   (`Bitte desinfizieren Sie sich die Hände.`), with `de_plural` and
   `uk_gender` empty, and that phrases addressed to patients use the formal
@@ -312,15 +468,29 @@ When a decision is made, move it to "Decisions" above.
   that edition anyway (they can be suspended by tag), or leave out what the
   course already teaches?
 - Conventions used for `vocab/alltag.tsv`, not yet confirmed by the user:
-  - Every polysyllabic Ukrainian word in `uk`, `uk_synonyms` and `uk_note`
+  - Every polysyllabic Ukrainian word in `uk`, `uk_synonyms`, `de_note_uk`
+    and `en_note_uk`
     has its stress checked against the stress sources in "Decisions". For an
     inflected form in a phrase (`почува́юся`), `source` cites the entry of its
     lemma.
   - Phrases and notes in Ukrainian that Claude wrote get a `review` comment
     asking for a native check, even when every word's stress is confirmed.
-- Ukrainian audio: a native speaker (same script) or text-to-speech?
-- Should the recordings be published in the repo? `audio/` is gitignored until
-  this is decided.
+- Ukrainian audio: recorded by Ukrainian friends (with the browser recorder
+  `tools/recorder/`). Do they agree to publication (then it
+  goes into the public packages), or is it for the user's own collection only?
+  Text-to-speech with a native listening check remains a fallback.
+- English audio: a native speaker, or text-to-speech with a listening check by
+  a native or very good English speaker (English TTS is much more reliable
+  than Ukrainian, but the rule against wrong pronunciations still applies)?
+- English content: the `en` cells have had a first cleanup pass (one learnable
+  headword, alternatives and US forms in `en_synonyms`, abbreviations in
+  `en_abbr`; `uk_note_en` translated from `uk_note_de`). Still open: `en_ipa`,
+  `en_note_uk` and `example_en` are empty, and the English in the word lists
+  has not been checked by a native or very good English speaker yet (the
+  `EN:` items in `review` are the explicit questions).
+- Should the recordings be published, in the repo and in the public packages?
+  This applies to the user's own German recordings as well. `audio/` is
+  gitignored until this is decided.
 - Later, optionally: a trilingual glossary (German, English, Ukrainian as a
   web page or PDF) generated from the same word list, for colleagues who
   don't use Anki.

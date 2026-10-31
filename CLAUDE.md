@@ -387,6 +387,16 @@ column exists only for pairs that have an edition.
   (`https://goroh.pp.ua/Тлумачення/<word>`) is used. The source is always
   cited in `source`. Words with no stress source at all get no stress mark and
   a `review` comment.
+- Ukrainian inflected forms (`uk_plural`, `uk_genitive`, `uk_present`,
+  `uk_paradigm`) come from goroh.pp.ua (Словозміна). A goroh page lists
+  several lexemes, so only the table whose base form matches the headword
+  exactly, including its stress, is used. Where goroh has no such table,
+  Wiktionary's inflection table is used. For nouns the genitive is checked
+  against Wiktionary's headword line, which picks the right one of several
+  tables (standard masculine `біль, бо́лю`, not the colloquial feminine). Only
+  regular hard adjectives in `-ий` that neither source has are declined by
+  rule. Where goroh and Wiktionary disagree on a form, the row gets a `UK:`
+  review item instead of a silent choice.
 - The euphonic preposition follows the orthography: `із` between two
   consonants (`мазо́к із но́са`).
 - `de_plural` is `–` when the plural isn't used in the card's sense, even if

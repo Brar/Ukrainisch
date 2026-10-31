@@ -33,9 +33,9 @@ import soundfile as sf
 
 from audio_processing import process, save_mp3
 
-LANGS = ("de", "uk")
+LANGS = ("de", "uk", "en")
 # Review items: the review cell is split before each prefix. Must match tools/recorder/index.html.
-ITEM_SPLIT = re.compile(r"\s+(?=(?:UK|DE|EN|Build|Reader [^:()]{1,60} \((?:uk|de)\)):)")
+ITEM_SPLIT = re.compile(r"\s+(?=(?:UK|DE|EN|Build|Reader [^:()]{1,60} \((?:uk|de|en)\)):)")
 ITEM_SEPARATOR = " ¦ "   # how the recorder joins the items it showed
 
 

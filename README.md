@@ -1,8 +1,14 @@
 # Ukrainisch
 
-Bidirectional German ⇄ Ukrainian [Anki](https://apps.ankiweb.net/) cards for
-medical vocabulary. Every note is studied in both directions (German →
-Ukrainian and Ukrainian → German).
+[Anki](https://apps.ankiweb.net/) cards for medical vocabulary in German,
+Ukrainian and English, in four editions:
+
+- German → Ukrainian, for German speakers learning Ukrainian
+- Ukrainian → German, for Ukrainian speakers learning German
+- Ukrainian → English, for Ukrainian speakers learning English
+- English → Ukrainian, for English speakers learning Ukrainian
+
+Every note is studied in both directions of its edition's language pair.
 
 ## Focus areas
 
@@ -22,8 +28,11 @@ literal translations. Terms are checked against:
 - **Ukrainian:** orders and protocols of the Ministry of Health of Ukraine
   (МОЗ України), the Public Health Center of Ukraine (Центр громадського
   здоров'я України), and WHO materials in Ukrainian
+- **English:** WHO, ECDC and CDC; EUCAST for susceptibility testing; NHS
+  patient information for everyday words
 
-Ukrainian follows the current standard orthography (2019).
+Ukrainian follows the current standard orthography (2019). English uses
+British spelling, as WHO and ECDC do.
 
 ## Status
 

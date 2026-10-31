@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Prüfen und aufnehmen · Перевірка і запис</title>
+<title>Prüfen und aufnehmen · Перевірка і запис · Check and record</title>
 <style>
   :root {
     --bg: #fafaf7; --fg: #1d1d1b; --muted: #6b6b66; --line: #d9d9d2;
@@ -54,9 +54,10 @@
 <main>
   <div class="row" style="justify-content: space-between">
     <h1 data-t="title"></h1>
-    <select id="ui" aria-label="Sprache / Мова" style="width:auto">
+    <select id="ui" aria-label="Sprache / Мова / Language" style="width:auto">
       <option value="de">Deutsch</option>
       <option value="uk">Українська</option>
+      <option value="en">English</option>
     </select>
   </div>
 
@@ -69,6 +70,7 @@
     <select id="lang">
       <option value="uk">Українська</option>
       <option value="de">Deutsch</option>
+      <option value="en">English</option>
     </select>
     <label for="group" data-t="group"></label>
     <select id="group"></select>
@@ -222,6 +224,49 @@ const TEXT = {
     exported: n => `Експортовано ${n} записів. Надішліть, будь ласка, zip-файл.`,
     nothingToExport: "Поки що нічого експортувати.",
   },
+  en: {
+    title: "Check and record",
+    intro: "One entry per screen: check, confirm or comment, record, next. Everything stays in this browser until you export it as a zip file and send it.",
+    speaker: "Your name",
+    lang: "Language",
+    group: "Topic",
+    part: "Part",
+    all: "All",
+    showDone: "Show finished entries too (check or record again)",
+    stress: "Show stress marks",
+    start: "Start",
+    openFiles: "Offline: open word list files",
+    tipsTitle: "Tips for good recordings",
+    tips: "A quiet room with curtains or upholstered furniture, no echo. Windows closed, devices off. Phone or microphone about 20 cm from your mouth, always the same. Headphones for listening. Speak naturally, not overly slowly. Record a test first and listen to it.",
+    toCheck: "Please check",
+    step1: "1. Is everything correct?",
+    allGood: "✓ All correct",
+    comment: "If not: what is wrong? (correction or comment)",
+    step2: "2. Record",
+    record: "● Record", stop: "■ Stop", play: "▶ Listen",
+    back: "← Back", next: "Next →",
+    keys: "Keyboard: Space = record/stop, P = listen, O = all correct, Enter or → = next, ← = back.",
+    export: "Export zip", toSetup: "Settings",
+    noSpeaker: "Please enter your name first.",
+    loaded: (n, f) => `${n} entries loaded from ${f} word lists.`,
+    loadFailed: "The word lists could not be loaded. Please open the files below.",
+    nothing: "No open entries in this part.",
+    partLabel: (n, from, to, done, total) => `Part ${n} (${from}–${to}) · ${done}/${total} done`,
+    recorded: "recorded", notRecorded: "not recorded yet", stale: "text changed – please record again",
+    checked: "checked", notChecked: "not checked yet",
+    recording: "● Recording …",
+    clipped: "Too loud (clipping): speak a little further from the microphone and record again.",
+    quiet: "Very quiet: move closer to the microphone and record again.",
+    noisy: "Lots of background noise: if possible, record again somewhere quieter.",
+    tooLong: "Longer than 10 seconds: did the recording start too early or stop too late?",
+    goodTake: "✓ Recording saved.",
+    noMic: "No access to the microphone. Please allow it in the browser.",
+    hintNote: "don't read the brackets",
+    synonyms: "Also", note: "Note", example: "Example",
+    savedCount: (r, c) => `In this browser: ${r} recordings, ${c} checked entries.`,
+    exported: n => `${n} entries exported. Please send the zip file.`,
+    nothingToExport: "Nothing to export yet.",
+  },
 };
 
 const WORD_LISTS = ["alltag", "klinik", "mikrobiologie", "hygiene", "antiinfektiva"];
@@ -231,16 +276,16 @@ const ACUTE = /́/g;
 const $ = id => document.getElementById(id);
 
 // Review items: the review cell is split before each prefix. Must match import_recordings.py.
-const ITEM_SPLIT = /\s+(?=(?:UK|DE|EN|Build|Reader [^:()]{1,60} \((?:uk|de)\)):)/;
+const ITEM_SPLIT = /\s+(?=(?:UK|DE|EN|Build|Reader [^:()]{1,60} \((?:uk|de|en)\)):)/;
 function reviewItems(text) {
   return (text || "").split(ITEM_SPLIT).map(s => s.trim()).filter(Boolean);
 }
 function itemsFor(entry, l) {
   return reviewItems(entry.review).filter(item => {
-    const m = item.match(/^(UK|DE|EN|Build|Reader [^:()]+ \((uk|de)\)):/);
+    const m = item.match(/^(UK|DE|EN|Build|Reader [^:()]+ \((uk|de|en)\)):/);
     if (!m) return true;                             // general question
     if (m[2]) return m[2] === l;                     // an earlier reader's comment
-    return l === "uk" ? m[1] === "UK" : m[1] === "DE" || m[1] === "EN";
+    return m[1] === l.toUpperCase();
   });
 }
 
@@ -249,7 +294,8 @@ const store = {
   get(key, fallback) { try { const v = localStorage.getItem("rec:" + key); return v === null ? fallback : JSON.parse(v); } catch { return fallback; } },
   set(key, value) { try { localStorage.setItem("rec:" + key, JSON.stringify(value)); } catch { /* storage may be blocked */ } },
 };
-let ui = store.get("ui", (navigator.language || "de").startsWith("uk") ? "uk" : "de");
+const browserLang = (navigator.language || "de").slice(0, 2);
+let ui = store.get("ui", TEXT[browserLang] ? browserLang : "en");
 const t = key => TEXT[ui][key];
 
 function applyText() {
@@ -576,12 +622,14 @@ function renderItem() {
     span.textContent = ` ${m[2]} · ${t("hintNote")}`;
     $("prompt").appendChild(span);
   }
-  const other = l === "uk" ? e.de : (e.uk || "").replace(ACUTE, "");
-  $("context").textContent = [other, e.en].filter(Boolean).join(" · ");
+  const others = ["de", "uk", "en"].filter(x => x !== l).map(x => (e[x] || "").replace(ACUTE, ""));
+  $("context").textContent = others.filter(Boolean).join(" · ");
   // What a reader of this language can judge: synonyms, the note written in it, the example.
-  const extra = l === "uk"
-    ? [["synonyms", e.uk_synonyms], ["note", e.de_note], ["example", e.example_uk]]
-    : [["synonyms", e.de_synonyms], ["note", e.uk_note], ["example", e.example_de]];
+  const extra = {
+    uk: [["synonyms", e.uk_synonyms], ["note", e.de_note_uk], ["note", e.en_note_uk], ["example", e.example_uk]],
+    de: [["synonyms", e.de_synonyms], ["note", e.uk_note_de], ["example", e.example_de]],
+    en: [["synonyms", e.en_synonyms], ["note", e.uk_note_en], ["example", e.example_en]],
+  }[l];
   $("extra").innerHTML = "";
   for (const [label, value] of extra) {
     if (!value) continue;

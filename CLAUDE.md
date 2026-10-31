@@ -167,18 +167,41 @@ column exists only for pairs that have an edition.
     `–` never means plural-only, so `die Hygiene` with `–` stays feminine.
   - `de_ipa`: optional IPA, taken from Wiktionary (entry URL in `source`).
   - `de_synonyms`, `de_abbr`
+  - `de_verb_forms`: for verbs, the principal parts: 3rd person singular
+    present, preterite, perfect (`hustet, hustete, hat gehustet`). Taken from
+    Wiktionary.
+  - `de_paradigm`: the full paradigm as a reference table, filled
+    automatically from Wiktionary. Nouns: `N der Arzt / die Ärzte; G des
+    Arztes / der Ärzte; D dem Arzt / den Ärzten; A den Arzt / die Ärzte`
+    (singular / plural). Verbs: `pres huste, hustest, hustet; past hustete;
+    perf hat gehustet; imp huste / hustet; subj2 hustete`.
   - `de_note_uk`: a note on German, written in Ukrainian.
   - `uk`: dictionary form with stress marks.
   - `uk_gender`: `m`, `f`, `n` or `pl` (plural-only).
   - `uk_plural`: nominative plural with stress marks, for nouns. Same rules as
     `de_plural`: `–` if the plural isn't used in the card's sense; for a
     plural-only noun it repeats the headword. Taken from Wiktionary.
+  - `uk_genitive`: genitive singular with stress marks, for nouns (genitive
+    plural for plural-only nouns); it shows the declension class and stress
+    shifts. Multi-word terms are declined as a phrase (adjectives agree, a
+    complement such as `із зі́ва` stays). Taken from goroh.pp.ua.
   - `uk_ipa`: optional IPA, taken from Wiktionary (entry URL in `source`).
   - `uk_aspect`: for verbs, the aspect of the headword (`impf`, `pf` or
     `biasp`), then a colon and its aspect partner(s) with stress marks,
     separated by `, `: `impf: кашляну́ти`, `pf: захво́рювати, хворі́ти`. Just
     `impf` if there is no partner. Taken from Wiktionary. The build shows the
     labels in the audience's language.
+  - `uk_present`: for verbs, 1st and 2nd person singular of the present tense
+    (of the simple future for perfective verbs), with stress marks:
+    `говорю́, гово́риш`. It shows the conjugation class and stress shifts.
+    Taken from goroh.pp.ua.
+  - `uk_paradigm`: the full paradigm as a reference table, filled
+    automatically from goroh.pp.ua (first variant of each form only). Nouns:
+    `N о́ко / о́чі; G о́ка / оче́й; D …; A …; I …; L …; V …` (singular / plural;
+    plural only for plural-only nouns). Verbs: `pres говорю́, гово́риш,
+    гово́рить / гово́римо, гово́рите, гово́рять; past говори́в, говори́ла,
+    говори́ло, говори́ли; imp говори́ / говорі́ть` (`fut` instead of `pres` for
+    perfective verbs).
   - `uk_synonyms`: standard synonyms in real use.
   - `uk_abbr`
   - `uk_nonstandard`: common non-standard spellings (see "Ukrainian spelling").
@@ -201,6 +224,8 @@ column exists only for pairs that have an edition.
     Wiktionary.
   - `en_ipa`: optional British (Received Pronunciation) IPA, taken from
     Wiktionary (entry URL in `source`).
+  - `en_verb_forms`: for verbs, simple past and past participle
+    (`ate, eaten`; `coughed, coughed`). Taken from Wiktionary.
   - `en_synonyms`: synonyms in real use, including the US form where it
     differs (`diarrhea`, `acetaminophen`), so it is accepted but not taught as
     the main form.
@@ -369,6 +394,18 @@ column exists only for pairs that have an edition.
 - When two notes share a headword, a short hint in parentheses tells them
   apart: `der Hals (innen)` (`го́рло`) and `der Hals (außen)` (`ши́я`). The
   hint is shown on the card but not spoken in the recording.
+- Inflection is trained in Anki, not only looked up:
+  - Form cards: extra card templates in each edition's note type ask for
+    the key forms (`uk_plural`, `uk_genitive`, `uk_present`, `uk_aspect`,
+    `de_plural`, `de_verb_forms`, `en_plural`, `en_verb_forms`). Anki only
+    creates a card when the field is filled. They go to their own subdeck
+    via a deck override, so they can be suspended or started later.
+  - Paradigms (`de_paradigm`, `uk_paradigm`) are shown as a reference table
+    on the back of the card. They are never drilled form by form, which
+    would mean thousands of near-identical cards.
+  - Cases and their use are trained in context (cloze cards in the grammar
+    module); complete paradigms are drilled only for a few model words per
+    declension or conjugation type.
 - Grammatical gender is colour-coded for German and Ukrainian in every edition
   that shows them (English has no grammatical gender), with
   one colour scheme for masculine, feminine, neuter and plural-only. German
@@ -403,13 +440,15 @@ When a decision is made, move it to "Decisions" above.
   `docs/alltag-szenarien.md`.
   Children's words (for paediatrics) carry `register::kindersprache`, and
   their notes name the word adults use.
-- Grammar: the vocabulary is shared, but each audience needs different grammar
-  (Ukrainian cases, aspect and verbs of motion for German speakers; German
-  articles, word order, Perfekt and Sie form for Ukrainian speakers). Proposed:
-  rule cards with their own note type per edition, like the transliteration
-  rule cards, kept outside `vocab/*.tsv`, with the same level subdecks
-  (A1 … B2) so grammar and vocabulary advance together. Format and deck name
-  still open.
+- Grammar module: the vocabulary is shared, but each audience needs different
+  grammar (Ukrainian cases, aspect and verbs of motion for German and English
+  speakers; German articles, word order, Perfekt and Sie form, and English
+  tenses, for Ukrainian speakers). Proposed: rule cards plus cloze cards that
+  practise each rule in a phrase from our scenarios (`У ме́не боли́ть
+  {{голова́}}`), and full paradigms for a few model words per declension or
+  conjugation type, with their own note type per edition, kept outside
+  `vocab/*.tsv`, in the same level subdecks (A1 … B2) so grammar and
+  vocabulary advance together. Format and deck name still open.
 - Phrases in `vocab/alltag.tsv`: proposed that a row may hold a whole phrase
   (`Bitte desinfizieren Sie sich die Hände.`), with `de_plural` and
   `uk_gender` empty, and that phrases addressed to patients use the formal

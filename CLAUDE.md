@@ -84,25 +84,48 @@ German. Notes on German (usage) are in Ukrainian.
   - `--list-devices`, `--device` and `--channel` select the input. The user's
     interface is a Steinberg UR22mkII with two inputs.
   - It is interactive, so the user runs it in their own terminal, not Claude.
-- `tools/recorder/index.html` is a browser-based recorder for people who
-  don't install anything (e.g. Ukrainian friends on a phone).
+- `tools/recorder/index.html` is a browser page for checking and recording in
+  one go, for people who don't install anything (e.g. Ukrainian friends on a
+  phone).
   - It loads `vocab/*.tsv` from the same site, so it must be served over HTTPS
     from the repository: GitHub Pages (Settings → Pages → Deploy from branch
     `main`, folder `/`) gives
     <https://brar.github.io/Ukrainisch/tools/recorder/>. Opened as a local
-    file, it can't fetch the lists; the word-list files can then be opened
-    with the file picker on the page instead.
-  - One entry per screen, filtered by word list and level. Ukrainian is shown
-    without stress marks by default, so the reader isn't steered by our marks
-    and a different stress in the recording points to a possible error.
-  - Takes and comments stay in the browser (IndexedDB) until they are exported
-    as a zip with WAV files and `manifest.tsv`. Nothing is uploaded.
+    file, it can't fetch the lists; they can then be opened with the file
+    picker on the page instead.
+  - The reader chooses a language, a topic (word list · level · scenario or
+    `thema::` tag) and a part of at most 20 entries. By default only open
+    entries are shown; "show finished entries too" allows re-checking and
+    re-recording.
+  - Per entry it shows the main form, synonyms, the note and example written
+    in the reader's language, and the open review items for that language
+    (`UK:` for Ukrainian readers, `DE:`/`EN:` for German readers, items
+    without a prefix for both, and earlier readers' comments). The reader
+    confirms ("all correct") or writes a correction, and records.
+  - Ukrainian is shown without stress marks by default, so the reader isn't
+    steered by our marks; a different stress in the recording points to a
+    possible error.
+  - Quality: browser processing (echo cancellation, noise suppression,
+    automatic gain) is switched off and takes are stored as uncompressed WAV.
+    After each take the page warns about clipping, a too quiet voice,
+    background noise and takes longer than 10 s.
+  - A take or check remembers the text it was made for. If the entry's text
+    changes later, the take is marked as outdated and must be recorded again.
+  - Everything stays in the browser (IndexedDB) until it is exported as a zip
+    with WAV files and `manifest.tsv`. Nothing is uploaded.
   - The interface is in German and Ukrainian. The Ukrainian interface text
     was written by Claude and still needs a native check.
-- `tools/import_recordings.py <zip>…` imports such a zip: it processes every
-  take like `record_audio.py` and saves `audio/<lang>/<id>.mp3` (existing
-  files are kept unless `--overwrite`). Comments from the reader are added to
-  the `review` column of the matching row.
+- `tools/import_recordings.py <zip>…` imports such a zip:
+  - takes are processed like `record_audio.py` and saved as
+    `audio/<lang>/<id>.mp3` (existing files are kept unless `--overwrite`);
+  - a confirmation removes the review items the reader was shown from the
+    `review` column, and a comment is added to it as
+    `Reader <name> (<lang>): …`;
+  - takes and checks whose text no longer matches the word list are skipped;
+  - at the end it lists draft rows without open review items, whose status
+    can now be set to `ok`.
+  The review item format is shared with the page: items start with `UK:`,
+  `DE:`, `EN:`, `Build:` or `Reader <name> (<lang>):`.
 - `tools/audio_processing.py` holds the shared processing (trim silence,
   normalise loudness, MP3), so both ways of recording sound the same.
 

@@ -286,6 +286,15 @@ German. Notes on German (usage) are in Ukrainian.
   as `audio/de/<ID>.mp3`. Nouns are recorded with their article ("die
   Blutkultur"). Ukrainian audio will follow later; the same script can record
   it (`--column uk --out audio/uk`).
+- Audio is switched on or off per language and per package: German audio and
+  Ukrainian audio each have their own switch in the build. A package for the
+  user's own collection includes all recordings there are. A package for
+  publishing includes a language's audio only when every speaker of it has
+  agreed in writing to publication under CC BY-SA 4.0. Otherwise that package
+  ships without audio for that language.
+- No audio with a wrong pronunciation is published. Text-to-speech is never
+  used without a native speaker listening to every file, and files that fail
+  that check are dropped.
 
 ## Open decisions
 
@@ -320,9 +329,13 @@ When a decision is made, move it to "Decisions" above.
     lemma.
   - Phrases and notes in Ukrainian that Claude wrote get a `review` comment
     asking for a native check, even when every word's stress is confirmed.
-- Ukrainian audio: a native speaker (same script) or text-to-speech?
-- Should the recordings be published in the repo? `audio/` is gitignored until
-  this is decided.
+- Ukrainian audio: recorded by Ukrainian friends (with `tools/record_audio.py`
+  or a simpler browser-based recorder). Do they agree to publication (then it
+  goes into the public packages), or is it for the user's own collection only?
+  Text-to-speech with a native listening check remains a fallback.
+- Should the recordings be published, in the repo and in the public packages?
+  This applies to the user's own German recordings as well. `audio/` is
+  gitignored until this is decided.
 - Later, optionally: a trilingual glossary (German, English, Ukrainian as a
   web page or PDF) generated from the same word list, for colleagues who
   don't use Anki.

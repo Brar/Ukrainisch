@@ -1,0 +1,567 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: MIT -->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aufnahme · Запис</title>
+<style>
+  :root {
+    --bg: #fafaf7; --fg: #1d1d1b; --muted: #6b6b66; --line: #d9d9d2;
+    --accent: #1f5fae; --rec: #c62828; --ok: #2e7d32; --card: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #151514; --fg: #ededea; --muted: #a3a39c; --line: #3a3a36;
+            --accent: #7fb0f0; --rec: #ef6b6b; --ok: #7cc480; --card: #1f1f1d; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 16px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 1.2rem; margin: 0 0 12px; }
+  label { display: block; margin: 10px 0 4px; font-weight: 600; }
+  input[type=text], select, textarea { width: 100%; padding: 10px; font: inherit;
+    border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--fg); }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .check { display: flex; gap: 8px; align-items: center; margin: 10px 0; font-weight: 400; }
+  button { font: inherit; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--line);
+           background: var(--card); color: var(--fg); cursor: pointer; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button.rec { background: var(--rec); border-color: var(--rec); color: #fff; min-width: 9em; }
+  button:disabled { opacity: .45; cursor: default; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin: 12px 0; }
+  .prompt { font-size: 2rem; line-height: 1.25; font-weight: 600; word-wrap: break-word; }
+  .hint { font-size: 1rem; color: var(--muted); font-weight: 400; }
+  .context { color: var(--muted); margin-top: 10px; }
+  .status { min-height: 1.5em; margin: 8px 0; }
+  .ok { color: var(--ok); } .warn { color: var(--rec); }
+  .meter { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; margin: 10px 0; }
+  .meter > div { height: 100%; width: 0; background: var(--ok); transition: width 60ms linear; }
+  .small { font-size: .9rem; color: var(--muted); }
+  .hidden { display: none; }
+  progress { width: 100%; }
+  kbd { border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; font-size: .85em; }
+</style>
+</head>
+<body>
+<main>
+  <div class="row" style="justify-content: space-between">
+    <h1 data-t="title"></h1>
+    <select id="ui" aria-label="Sprache / Мова" style="width:auto">
+      <option value="de">Deutsch</option>
+      <option value="uk">Українська</option>
+    </select>
+  </div>
+
+  <!-- Setup -->
+  <section id="setup">
+    <p data-t="intro"></p>
+    <label for="speaker" data-t="speaker"></label>
+    <input id="speaker" type="text" autocomplete="name">
+    <label for="lang" data-t="lang"></label>
+    <select id="lang">
+      <option value="uk">Українська</option>
+      <option value="de">Deutsch</option>
+    </select>
+    <label for="list" data-t="list"></label>
+    <select id="list"></select>
+    <label for="level" data-t="level"></label>
+    <select id="level"></select>
+    <label class="check"><input id="todoOnly" type="checkbox" checked> <span data-t="todoOnly"></span></label>
+    <label class="check" id="stressRow"><input id="stress" type="checkbox"> <span data-t="stress"></span></label>
+    <p class="small" id="loadInfo"></p>
+    <div class="row">
+      <button id="start" class="primary" data-t="start"></button>
+      <label class="small" style="margin:0;font-weight:400">
+        <span data-t="openFiles"></span>
+        <input id="files" type="file" accept=".tsv,text/tab-separated-values" multiple>
+      </label>
+    </div>
+  </section>
+
+  <!-- Recording -->
+  <section id="work" class="hidden">
+    <progress id="progress" value="0" max="1"></progress>
+    <div class="small" id="position"></div>
+    <div class="card">
+      <div class="prompt" id="prompt"></div>
+      <div class="context" id="context"></div>
+    </div>
+    <div class="meter"><div id="level-bar"></div></div>
+    <div class="status" id="status"></div>
+    <div class="row">
+      <button id="rec" class="rec" data-t="record"></button>
+      <button id="play" data-t="play" disabled></button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button id="back" data-t="back"></button>
+      <button id="next" class="primary" data-t="next"></button>
+    </div>
+    <label for="comment" data-t="comment"></label>
+    <textarea id="comment" rows="2"></textarea>
+    <p class="small" data-t="keys"></p>
+    <div class="row">
+      <button id="export" data-t="export"></button>
+      <button id="toSetup" data-t="toSetup"></button>
+    </div>
+    <p class="small" id="saved"></p>
+  </section>
+</main>
+
+<script>
+"use strict";
+
+const TEXT = {
+  de: {
+    title: "Aufnahme der Wörter",
+    intro: "Ein Eintrag pro Bildschirm: lesen, aufnehmen, anhören, weiter. Die Aufnahmen bleiben in diesem Browser, bis Sie sie als Zip-Datei exportieren und verschicken.",
+    speaker: "Ihr Name",
+    lang: "Sprache der Aufnahme",
+    list: "Wortliste",
+    level: "Niveau",
+    all: "Alle",
+    todoOnly: "Nur Einträge ohne Aufnahme",
+    stress: "Betonungszeichen anzeigen",
+    start: "Los",
+    openFiles: "Oder Wortlisten-Dateien öffnen:",
+    record: "● Aufnehmen", stop: "■ Stopp", play: "▶ Anhören",
+    back: "← Zurück", next: "Weiter →",
+    comment: "Problem mit diesem Eintrag? (optional)",
+    keys: "Tastatur: Leertaste = Aufnehmen/Stopp, P = Anhören, Enter oder → = weiter, ← = zurück.",
+    export: "Zip exportieren", toSetup: "Einstellungen",
+    noSpeaker: "Bitte zuerst Ihren Namen eingeben.",
+    loaded: (n, f) => `${n} Einträge aus ${f} Wortlisten geladen.`,
+    loadFailed: "Die Wortlisten konnten nicht geladen werden. Öffnen Sie die Dateien unten.",
+    nothing: "Keine Einträge für diese Auswahl.",
+    done: "Alle Einträge dieser Auswahl haben eine Aufnahme.",
+    recorded: "✓ aufgenommen", notRecorded: "noch keine Aufnahme",
+    recording: "● Aufnahme läuft …",
+    clipped: "Zu laut: bitte etwas weiter weg sprechen und neu aufnehmen.",
+    quiet: "Sehr leise: bitte näher an das Mikrofon und neu aufnehmen.",
+    noMic: "Kein Zugriff auf das Mikrofon. Bitte im Browser erlauben.",
+    hintNote: "Klammer nicht mitsprechen",
+    savedCount: (n, c) => `${n} Aufnahmen und ${c} Kommentare in diesem Browser gespeichert.`,
+    exported: n => `${n} Aufnahmen exportiert. Bitte die Zip-Datei verschicken.`,
+    nothingToExport: "Noch nichts zum Exportieren.",
+  },
+  uk: {
+    title: "Запис слів",
+    intro: "Один запис на екрані: прочитати, записати, прослухати, далі. Записи зберігаються в цьому браузері, доки ви не експортуєте їх як zip-файл і не надішлете.",
+    speaker: "Ваше ім'я",
+    lang: "Мова запису",
+    list: "Список слів",
+    level: "Рівень",
+    all: "Усі",
+    todoOnly: "Лише записи без аудіо",
+    stress: "Показувати наголоси",
+    start: "Почати",
+    openFiles: "Або відкрийте файли зі списками слів:",
+    record: "● Записати", stop: "■ Стоп", play: "▶ Прослухати",
+    back: "← Назад", next: "Далі →",
+    comment: "Проблема з цим записом? (необов'язково)",
+    keys: "Клавіатура: пробіл = запис/стоп, P = прослухати, Enter або → = далі, ← = назад.",
+    export: "Експортувати zip", toSetup: "Налаштування",
+    noSpeaker: "Спершу введіть своє ім'я.",
+    loaded: (n, f) => `Завантажено ${n} записів із ${f} списків.`,
+    loadFailed: "Не вдалося завантажити списки слів. Відкрийте файли нижче.",
+    nothing: "Для цього вибору записів немає.",
+    done: "Усі записи цього вибору вже мають аудіо.",
+    recorded: "✓ записано", notRecorded: "ще не записано",
+    recording: "● Іде запис …",
+    clipped: "Занадто гучно: говоріть трохи далі від мікрофона і запишіть ще раз.",
+    quiet: "Дуже тихо: підійдіть ближче до мікрофона і запишіть ще раз.",
+    noMic: "Немає доступу до мікрофона. Дозвольте його в браузері.",
+    hintNote: "дужки не читати",
+    savedCount: (n, c) => `У цьому браузері збережено ${n} записів і ${c} коментарів.`,
+    exported: n => `Експортовано ${n} записів. Надішліть, будь ласка, zip-файл.`,
+    nothingToExport: "Поки що нічого експортувати.",
+  },
+};
+
+const WORD_LISTS = ["alltag", "klinik", "mikrobiologie", "hygiene", "antiinfektiva"];
+const VOCAB_BASE = "../../vocab/";
+const ACUTE = /́/g;
+const $ = id => document.getElementById(id);
+
+// ---------- small helpers ----------
+const store = {
+  get(key, fallback) { try { const v = localStorage.getItem("rec:" + key); return v === null ? fallback : JSON.parse(v); } catch { return fallback; } },
+  set(key, value) { try { localStorage.setItem("rec:" + key, JSON.stringify(value)); } catch { /* storage may be blocked */ } },
+};
+let ui = store.get("ui", (navigator.language || "de").startsWith("uk") ? "uk" : "de");
+const t = key => TEXT[ui][key];
+
+function applyText() {
+  document.documentElement.lang = ui;
+  $("ui").value = ui;
+  document.querySelectorAll("[data-t]").forEach(el => { el.textContent = t(el.dataset.t); });
+  fillLevels();
+  if (current) { renderItem(); renderSaved(); }
+}
+
+// ---------- IndexedDB: takes and comments survive a reload ----------
+let dbPromise = null;
+function db() {
+  if (!dbPromise) dbPromise = new Promise((resolve, reject) => {
+    const req = indexedDB.open("recorder", 1);
+    req.onupgradeneeded = () => { req.result.createObjectStore("takes"); req.result.createObjectStore("comments"); };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+  return dbPromise;
+}
+async function dbOp(storeName, mode, fn) {
+  const d = await db();
+  return new Promise((resolve, reject) => {
+    const tx = d.transaction(storeName, mode);
+    const req = fn(tx.objectStore(storeName));
+    tx.oncomplete = () => resolve(req ? req.result : undefined);
+    tx.onerror = () => reject(tx.error);
+  });
+}
+const dbGet = (s, k) => dbOp(s, "readonly", st => st.get(k));
+const dbPut = (s, k, v) => dbOp(s, "readwrite", st => st.put(v, k));
+const dbDel = (s, k) => dbOp(s, "readwrite", st => st.delete(k));
+const dbKeys = s => dbOp(s, "readonly", st => st.getAllKeys());
+
+// ---------- word lists ----------
+let entries = [];            // {id, file, de, uk, en, tags, level}
+let loadedFiles = 0;
+
+function parseTsv(text, file) {
+  const lines = text.replace(/\r/g, "").split("\n").filter(l => l.length);
+  const head = lines.shift().split("\t");
+  return lines.map(line => {
+    const cells = line.split("\t");
+    const row = Object.fromEntries(head.map((h, i) => [h, cells[i] || ""]));
+    const level = ((row.tags || "").match(/niveau::(\w+)/) || [])[1] || "";
+    return { id: row.id, file, de: row.de, uk: row.uk, en: row.en, level };
+  }).filter(e => e.id);
+}
+
+async function loadFromRepo() {
+  const results = await Promise.all(WORD_LISTS.map(async name => {
+    try {
+      const res = await fetch(VOCAB_BASE + name + ".tsv", { cache: "no-cache" });
+      return res.ok ? parseTsv(await res.text(), name) : null;
+    } catch { return null; }
+  }));
+  setEntries(results.filter(Boolean));
+}
+
+async function loadFromFiles(files) {
+  const lists = await Promise.all([...files].map(async f => parseTsv(await f.text(), f.name.replace(/\.tsv$/, ""))));
+  setEntries(lists);
+}
+
+function setEntries(lists) {
+  entries = lists.flat();
+  loadedFiles = lists.length;
+  const names = [...new Set(entries.map(e => e.file))];
+  $("list").innerHTML = "";
+  for (const value of ["", ...names]) {
+    const o = document.createElement("option");
+    o.value = value; o.textContent = value || "–";
+    $("list").appendChild(o);
+  }
+  $("list").value = names.includes(store.get("list", "alltag")) ? store.get("list", "alltag") : "";
+  fillLevels();
+  $("loadInfo").textContent = entries.length ? t("loaded")(entries.length, loadedFiles) : t("loadFailed");
+}
+
+function fillLevels() {
+  const keep = store.get("level", "a1");
+  const levels = [...new Set(entries.map(e => e.level).filter(Boolean))].sort();
+  $("level").innerHTML = "";
+  for (const value of ["", ...levels]) {
+    const o = document.createElement("option");
+    o.value = value; o.textContent = value ? value.toUpperCase() : t("all");
+    $("level").appendChild(o);
+  }
+  $("level").value = levels.includes(keep) || keep === "" ? keep : "";
+  const first = $("list").options[0];
+  if (first) first.textContent = t("all");
+}
+
+// ---------- recording ----------
+let stream = null, ctx = null, source = null, node = null, analyser = null;
+let chunks = [], recording = false, peak = 0;
+
+const WORKLET = `
+class Collector extends AudioWorkletProcessor {
+  process(inputs) {
+    const ch = inputs[0] && inputs[0][0];
+    if (ch) this.port.postMessage(ch.slice(0));
+    return true;
+  }
+}
+registerProcessor("collector", Collector);`;
+
+async function ensureMic() {
+  if (stream) return true;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: {
+      channelCount: 1, echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+  } catch { status(t("noMic"), "warn"); return false; }
+  ctx = new (window.AudioContext || window.webkitAudioContext)();
+  source = ctx.createMediaStreamSource(stream);
+  analyser = ctx.createAnalyser();
+  analyser.fftSize = 1024;
+  source.connect(analyser);
+  const url = URL.createObjectURL(new Blob([WORKLET], { type: "application/javascript" }));
+  await ctx.audioWorklet.addModule(url);
+  node = new AudioWorkletNode(ctx, "collector");
+  node.port.onmessage = e => { if (recording) chunks.push(e.data); };
+  source.connect(node);
+  // Some browsers only run a node that ends in the destination; a muted gain keeps it silent.
+  const mute = ctx.createGain(); mute.gain.value = 0;
+  node.connect(mute).connect(ctx.destination);
+  meter();
+  return true;
+}
+
+function meter() {
+  const data = new Float32Array(analyser.fftSize);
+  const tick = () => {
+    analyser.getFloatTimeDomainData(data);
+    let max = 0;
+    for (const v of data) max = Math.max(max, Math.abs(v));
+    if (recording) peak = Math.max(peak, max);
+    $("level-bar").style.width = Math.min(100, max * 100) + "%";
+    requestAnimationFrame(tick);
+  };
+  tick();
+}
+
+function encodeWav(samples, rate) {
+  const buffer = new ArrayBuffer(44 + samples.length * 2);
+  const v = new DataView(buffer);
+  const str = (o, s) => [...s].forEach((c, i) => v.setUint8(o + i, c.charCodeAt(0)));
+  str(0, "RIFF"); v.setUint32(4, 36 + samples.length * 2, true); str(8, "WAVE");
+  str(12, "fmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+  str(36, "data"); v.setUint32(40, samples.length * 2, true);
+  for (let i = 0; i < samples.length; i++) {
+    const s = Math.max(-1, Math.min(1, samples[i]));
+    v.setInt16(44 + i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+  }
+  return new Blob([buffer], { type: "audio/wav" });
+}
+
+async function toggleRecord() {
+  if (!current) return;
+  if (!recording) {
+    if (!(await ensureMic())) return;
+    if (ctx.state === "suspended") await ctx.resume();
+    chunks = []; peak = 0; recording = true;
+    $("rec").textContent = t("stop");
+    status(t("recording"));
+    return;
+  }
+  recording = false;
+  $("rec").textContent = t("record");
+  const length = chunks.reduce((n, c) => n + c.length, 0);
+  const samples = new Float32Array(length);
+  let offset = 0;
+  for (const c of chunks) { samples.set(c, offset); offset += c.length; }
+  const key = keyOf(current);
+  await dbPut("takes", key, { blob: encodeWav(samples, ctx.sampleRate), at: new Date().toISOString() });
+  recordedKeys.add(key);
+  renderItem();
+  renderSaved();
+  if (peak >= 0.99) status(t("clipped"), "warn");
+  else if (peak < 0.05) status(t("quiet"), "warn");
+  playTake();
+}
+
+let player = null;
+async function playTake() {
+  const take = current && await dbGet("takes", keyOf(current));
+  if (!take) return;
+  if (player) { player.pause(); URL.revokeObjectURL(player.src); }
+  player = new Audio(URL.createObjectURL(take.blob));
+  player.play().catch(() => {});
+}
+
+// ---------- session ----------
+let queue = [], index = 0, current = null;
+let recordedKeys = new Set(), commentKeys = new Set();
+const lang = () => $("lang").value;
+const keyOf = e => lang() + "/" + e.id;
+
+function displayText(e) {
+  let text = e[lang()] || "";
+  if (lang() === "uk" && !$("stress").checked) text = text.replace(ACUTE, "");
+  const m = text.match(/^(.*?)\s*(\([^)]*\))\s*$/);
+  return m ? { main: m[1], hint: m[2] } : { main: text, hint: "" };
+}
+
+async function start() {
+  const speaker = $("speaker").value.trim();
+  if (!speaker) { alert(t("noSpeaker")); $("speaker").focus(); return; }
+  store.set("speaker", speaker); store.set("lang", lang());
+  store.set("list", $("list").value); store.set("level", $("level").value);
+  store.set("todoOnly", $("todoOnly").checked); store.set("stress", $("stress").checked);
+  recordedKeys = new Set(await dbKeys("takes"));
+  commentKeys = new Set(await dbKeys("comments"));
+  queue = entries.filter(e => (e[lang()] || "").trim()
+    && (!$("list").value || e.file === $("list").value)
+    && (!$("level").value || e.level === $("level").value));
+  if (!queue.length) { alert(t("nothing")); return; }
+  index = 0;
+  if ($("todoOnly").checked) {
+    index = queue.findIndex(e => !recordedKeys.has(keyOf(e)));
+    if (index < 0) { alert(t("done")); index = 0; }
+  }
+  $("setup").classList.add("hidden");
+  $("work").classList.remove("hidden");
+  await show(index);
+}
+
+async function show(i) {
+  await saveComment();
+  index = Math.max(0, Math.min(queue.length - 1, i));
+  current = queue[index];
+  $("comment").value = (await dbGet("comments", keyOf(current))) || "";
+  status("");
+  renderItem();
+  renderSaved();
+}
+
+function renderItem() {
+  const e = current, text = displayText(e);
+  $("prompt").textContent = text.main;
+  if (text.hint) {
+    const span = document.createElement("span");
+    span.className = "hint";
+    span.textContent = ` ${text.hint} · ${t("hintNote")}`;
+    $("prompt").appendChild(span);
+  }
+  const other = lang() === "uk" ? e.de : (e.uk || "").replace(ACUTE, "");
+  $("context").textContent = [other, e.en].filter(Boolean).join(" · ");
+  $("progress").max = queue.length; $("progress").value = index + 1;
+  const done = recordedKeys.has(keyOf(e));
+  $("position").textContent = `${index + 1} / ${queue.length} · ${e.id} · ${done ? t("recorded") : t("notRecorded")}`;
+  $("play").disabled = !done;
+  $("back").disabled = index === 0;
+}
+
+function renderSaved() {
+  $("saved").textContent = t("savedCount")(recordedKeys.size, commentKeys.size);
+}
+
+function status(text, cls) {
+  $("status").textContent = text;
+  $("status").className = "status " + (cls || "");
+}
+
+async function saveComment() {
+  if (!current) return;
+  const key = keyOf(current), text = $("comment").value.trim();
+  if (text) { await dbPut("comments", key, text); commentKeys.add(key); }
+  else if (commentKeys.has(key)) { await dbDel("comments", key); commentKeys.delete(key); }
+}
+
+// ---------- export ----------
+// A minimal zip writer (stored, no compression: WAV hardly compresses anyway).
+const CRC_TABLE = Array.from({ length: 256 }, (_, n) => {
+  let c = n;
+  for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+  return c >>> 0;
+});
+function crc32(bytes) {
+  let c = 0xffffffff;
+  for (const b of bytes) c = CRC_TABLE[(c ^ b) & 0xff] ^ (c >>> 8);
+  return (c ^ 0xffffffff) >>> 0;
+}
+async function makeZip(files) {   // files: [{name, data: Blob|string}]
+  const enc = new TextEncoder(), parts = [], central = [];
+  let offset = 0;
+  for (const f of files) {
+    const data = typeof f.data === "string" ? enc.encode(f.data) : new Uint8Array(await f.data.arrayBuffer());
+    const name = enc.encode(f.name), crc = crc32(data);
+    const header = (sig, extra) => {
+      const h = new DataView(new ArrayBuffer(extra ? 46 : 30));
+      h.setUint32(0, sig, true);
+      let o = 4;
+      if (extra) { h.setUint16(o, 20, true); o += 2; }           // version made by
+      h.setUint16(o, 20, true); h.setUint16(o + 2, 0x0800, true); // version needed; UTF-8 names
+      h.setUint16(o + 4, 0, true); h.setUint32(o + 6, 0, true);   // stored; time/date
+      h.setUint32(o + 10, crc, true); h.setUint32(o + 14, data.length, true); h.setUint32(o + 18, data.length, true);
+      h.setUint16(o + 22, name.length, true);
+      if (extra) h.setUint32(42, offset, true);                    // local header offset
+      return new Uint8Array(h.buffer);
+    };
+    parts.push(header(0x04034b50, false), name, data);
+    central.push(header(0x02014b50, true), name);
+    offset += 30 + name.length + data.length;
+  }
+  const size = central.reduce((n, p) => n + p.length, 0);
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true);
+  end.setUint16(8, files.length, true); end.setUint16(10, files.length, true);
+  end.setUint32(12, size, true); end.setUint32(16, offset, true);
+  return new Blob([...parts, ...central, new Uint8Array(end.buffer)], { type: "application/zip" });
+}
+
+async function exportZip() {
+  await saveComment();
+  const speaker = store.get("speaker", "");
+  const byId = new Map(entries.map(e => [e.id, e]));
+  const keys = [...new Set([...recordedKeys, ...commentKeys])].sort();
+  if (!keys.length) { alert(t("nothingToExport")); return; }
+  const files = [];
+  const rows = [["id", "lang", "file", "speaker", "text", "comment", "recorded_at"].join("\t")];
+  let count = 0;
+  for (const key of keys) {
+    const [l, id] = key.split("/");
+    const take = await dbGet("takes", key);
+    const comment = ((await dbGet("comments", key)) || "").replace(/[\t\r\n]+/g, " ");
+    const file = take ? `${l}/${id}.wav` : "";
+    if (take) { files.push({ name: file, data: take.blob }); count++; }
+    const text = ((byId.get(id) || {})[l] || "").replace(/[\t\r\n]+/g, " ");
+    rows.push([id, l, file, speaker, text, comment, take ? take.at : ""].join("\t"));
+  }
+  files.push({ name: "manifest.tsv", data: rows.join("\n") + "\n" });
+  const blob = await makeZip(files);
+  const slug = speaker.toLowerCase().normalize("NFKD").replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "") || "speaker";
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `recordings-${slug}-${new Date().toISOString().slice(0, 10)}.zip`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+  status(t("exported")(count), "ok");
+}
+
+// ---------- wiring ----------
+$("ui").addEventListener("change", () => { ui = $("ui").value; store.set("ui", ui); applyText(); });
+$("lang").addEventListener("change", () => { $("stressRow").classList.toggle("hidden", lang() !== "uk"); });
+$("files").addEventListener("change", e => loadFromFiles(e.target.files));
+$("start").addEventListener("click", start);
+$("rec").addEventListener("click", toggleRecord);
+$("play").addEventListener("click", playTake);
+$("next").addEventListener("click", () => show(index + 1));
+$("back").addEventListener("click", () => show(index - 1));
+$("export").addEventListener("click", exportZip);
+$("toSetup").addEventListener("click", async () => {
+  await saveComment();
+  $("work").classList.add("hidden"); $("setup").classList.remove("hidden");
+});
+document.addEventListener("keydown", e => {
+  if ($("work").classList.contains("hidden") || e.target === $("comment")) return;
+  if (e.key === " ") { e.preventDefault(); toggleRecord(); }
+  else if (e.key === "p" || e.key === "P") playTake();
+  else if (e.key === "Enter" || e.key === "ArrowRight") { e.preventDefault(); show(index + 1); }
+  else if (e.key === "ArrowLeft") show(index - 1);
+});
+
+$("speaker").value = store.get("speaker", "");
+$("lang").value = store.get("lang", "uk");
+$("todoOnly").checked = store.get("todoOnly", true);
+$("stress").checked = store.get("stress", false);
+$("stressRow").classList.toggle("hidden", lang() !== "uk");
+applyText();
+loadFromRepo();
+</script>
+</body>
+</html>

@@ -84,6 +84,27 @@ German. Notes on German (usage) are in Ukrainian.
   - `--list-devices`, `--device` and `--channel` select the input. The user's
     interface is a Steinberg UR22mkII with two inputs.
   - It is interactive, so the user runs it in their own terminal, not Claude.
+- `tools/recorder/index.html` is a browser-based recorder for people who
+  don't install anything (e.g. Ukrainian friends on a phone).
+  - It loads `vocab/*.tsv` from the same site, so it must be served over HTTPS
+    from the repository: GitHub Pages (Settings → Pages → Deploy from branch
+    `main`, folder `/`) gives
+    <https://brar.github.io/Ukrainisch/tools/recorder/>. Opened as a local
+    file, it can't fetch the lists; the word-list files can then be opened
+    with the file picker on the page instead.
+  - One entry per screen, filtered by word list and level. Ukrainian is shown
+    without stress marks by default, so the reader isn't steered by our marks
+    and a different stress in the recording points to a possible error.
+  - Takes and comments stay in the browser (IndexedDB) until they are exported
+    as a zip with WAV files and `manifest.tsv`. Nothing is uploaded.
+  - The interface is in German and Ukrainian. The Ukrainian interface text
+    was written by Claude and still needs a native check.
+- `tools/import_recordings.py <zip>…` imports such a zip: it processes every
+  take like `record_audio.py` and saves `audio/<lang>/<id>.mp3` (existing
+  files are kept unless `--overwrite`). Comments from the reader are added to
+  the `review` column of the matching row.
+- `tools/audio_processing.py` holds the shared processing (trim silence,
+  normalise loudness, MP3), so both ways of recording sound the same.
 
 ## Word list format
 
@@ -329,8 +350,8 @@ When a decision is made, move it to "Decisions" above.
     lemma.
   - Phrases and notes in Ukrainian that Claude wrote get a `review` comment
     asking for a native check, even when every word's stress is confirmed.
-- Ukrainian audio: recorded by Ukrainian friends (with `tools/record_audio.py`
-  or a simpler browser-based recorder). Do they agree to publication (then it
+- Ukrainian audio: recorded by Ukrainian friends (with the browser recorder
+  `tools/recorder/`). Do they agree to publication (then it
   goes into the public packages), or is it for the user's own collection only?
   Text-to-speech with a native listening check remains a fallback.
 - Should the recordings be published, in the repo and in the public packages?

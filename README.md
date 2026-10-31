@@ -39,8 +39,10 @@ German speakers learning Ukrainian and one for Ukrainian speakers learning
 German. Every note has a stable ID, so importing a rebuilt package updates the
 existing cards and keeps their review history. The
 [AnkiMCP add-on](https://github.com/ankimcp/anki-mcp-server-addon) is used to
-check the result in Anki. The German audio is recorded with
-[`tools/record_audio.py`](tools/record_audio.py).
+check the result in Anki. Audio is recorded with
+[`tools/record_audio.py`](tools/record_audio.py) or, without installing
+anything, with the browser recorder in [`tools/recorder/`](tools/recorder/)
+and imported with [`tools/import_recordings.py`](tools/import_recordings.py).
 
 ## Disclaimer
 

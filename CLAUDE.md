@@ -170,6 +170,15 @@ column exists only for pairs that have an edition.
   - `de_note_uk`: a note on German, written in Ukrainian.
   - `uk`: dictionary form with stress marks.
   - `uk_gender`: `m`, `f`, `n` or `pl` (plural-only).
+  - `uk_plural`: nominative plural with stress marks, for nouns. Same rules as
+    `de_plural`: `–` if the plural isn't used in the card's sense; for a
+    plural-only noun it repeats the headword. Taken from Wiktionary.
+  - `uk_ipa`: optional IPA, taken from Wiktionary (entry URL in `source`).
+  - `uk_aspect`: for verbs, the aspect of the headword (`impf`, `pf` or
+    `biasp`), then a colon and its aspect partner(s) with stress marks,
+    separated by `, `: `impf: кашляну́ти`, `pf: захво́рювати, хворі́ти`. Just
+    `impf` if there is no partner. Taken from Wiktionary. The build shows the
+    labels in the audience's language.
   - `uk_synonyms`: standard synonyms in real use.
   - `uk_abbr`
   - `uk_nonstandard`: common non-standard spellings (see "Ukrainian spelling").
@@ -186,8 +195,12 @@ column exists only for pairs that have an edition.
     use: the clinical term in the medical lists (`pharynx`), plain everyday
     English in `Ukrainisch::Alltag` (`throat`). The other register goes into
     `en_synonyms`, not into the headword.
-  - `en_ipa`: optional British IPA, taken from Wiktionary (entry URL in
-    `source`).
+  - `en_plural`: plural, for nouns. Same rules as `de_plural`: `–` if the
+    plural isn't used in the card's sense; for a plural-only or plural-form
+    headword (`lungs`, `stairs`) it repeats the headword. Taken from
+    Wiktionary.
+  - `en_ipa`: optional British (Received Pronunciation) IPA, taken from
+    Wiktionary (entry URL in `source`).
   - `en_synonyms`: synonyms in real use, including the US form where it
     differs (`diarrhea`, `acetaminophen`), so it is accepted but not taught as
     the main form.

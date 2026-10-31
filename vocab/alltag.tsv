@@ -163,6 +163,12 @@ es-geht-mir-besser	draft	niveau::a1 szenario::befinden	Es geht mir besser.						
 es-geht-mir-schlechter	draft	niveau::a1 szenario::befinden	Es geht mir schlechter.						Мені́ гі́рше.						I'm feeling worse.			https://en.wiktionary.org/wiki/мені | https://en.wiktionary.org/wiki/гірше	UK: native check of this phrase (written by Claude).
 tut-das-weh	draft	niveau::a1 szenario::befinden	Tut das weh?						Вам бо́ляче?					Auch: боляче́.	Does that hurt?			https://slovnyk.ua/index.php?swrd=боляче	UK: native check of this phrase (written by Claude).
 au	draft	niveau::a1 szenario::befinden	Au!		aʊ̯	Aua!		Вигук, коли болить.	Ой!		Ай!			Ausruf bei Schmerz oder Schreck.	Ouch!			https://de.wiktionary.org/wiki/au	UK: native check of de_note (written by Claude). UK: confirm ой / ай as the usual cry of pain.
+wow	draft	niveau::a1 szenario::befinden	Wow!		vaʊ̯				Ого́!						Wow!			https://de.wiktionary.org/wiki/wow | https://slovnyk.ua/index.php?swrd=ого	
+igitt	draft	niveau::a1 szenario::befinden	Igitt!		iˈɡɪt	Pfui!			Фу!						Yuck!			https://de.wiktionary.org/wiki/igitt	
+oje	draft	niveau::a1 szenario::befinden	Oje!		oˈjeː	Oh je!			Ох-ох!						Oh dear!			https://de.wiktionary.org/wiki/oje	UK: confirm Ох-ох! as an everyday cry of worry.
+lecker	draft	niveau::a1 szenario::befinden	Lecker!		ˈlɛkɐ	Mjam!			Ням!						Yum!			https://de.wiktionary.org/wiki/lecker	UK: confirm Ням! (children's register?) as the usual equivalent.
+angst	draft	niveau::a1 szenario::befinden	die Angst	die Ängste	aŋst				страх	m					fear			https://de.wiktionary.org/wiki/Angst | https://en.wiktionary.org/wiki/страх	
+haben-sie-angst	draft	niveau::a1 szenario::befinden	Haben Sie Angst?						Вам стра́шно?						Are you afraid?			https://en.wiktionary.org/wiki/страшно	UK: native check of this phrase (written by Claude).
 mir-ist-kalt	draft	niveau::a1 szenario::befinden	Mir ist kalt.						Мені́ хо́лодно.						I'm cold.			https://en.wiktionary.org/wiki/мені | https://en.wiktionary.org/wiki/холодно	UK: native check of this phrase (written by Claude).
 mir-ist-heiss	draft	niveau::a1 szenario::befinden	Mir ist heiß.						Мені́ жа́рко.						I'm hot.			https://en.wiktionary.org/wiki/мені | https://en.wiktionary.org/wiki/жарко	UK: native check of this phrase (written by Claude).
 mir-ist-schlecht	draft	niveau::a1 szenario::befinden	Mir ist schlecht.			Mir ist übel.		Тут schlecht означає «нудить», а не «погано».	Мене́ ну́дить.						I feel sick.			https://en.wiktionary.org/wiki/мене | https://en.wiktionary.org/wiki/нудити	UK: native check of this phrase (written by Claude). UK: native check of de_note (written by Claude).
@@ -216,3 +222,4 @@ aufstossen	draft	niveau::a2 szenario::symptome	das Aufstoßen	–					відри
 gedaechtnis	draft	niveau::a2 szenario::symptome	das Gedächtnis	–	ɡəˈdɛçtnɪs				па́м'ять	f					memory			https://de.wiktionary.org/wiki/Gedächtnis | https://en.wiktionary.org/wiki/пам'ять	
 geruch	draft	niveau::a2 szenario::symptome	der Geruch	die Gerüche	ɡəˈʁʊx				за́пах	m					smell; odour			https://de.wiktionary.org/wiki/Geruch | https://en.wiktionary.org/wiki/запах	
 geschmack	draft	niveau::a2 szenario::symptome	der Geschmack	–	ɡəˈʃmak				смак	m					taste			https://de.wiktionary.org/wiki/Geschmack | https://en.wiktionary.org/wiki/смак	
+gehoer	draft	niveau::a2 szenario::symptome	das Gehör	–	ɡəˈhøːɐ̯				слух	m					hearing			https://de.wiktionary.org/wiki/Gehör | https://en.wiktionary.org/wiki/слух	

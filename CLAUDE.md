@@ -248,9 +248,11 @@ German. Notes on German (usage) are in Ukrainian.
     a package updates notes but doesn't move existing cards to another deck.
 - The word lists in the repo (`vocab/*.tsv`) are the source of truth. A build
   script in `tools/` generates two Anki packages (`.apkg`) from them:
-  - an edition for German speakers learning Ukrainian, which the user imports
-    into `Ukrainisch::Medizin::*`;
-  - an edition for Ukrainian speakers learning German, built for publishing.
+  - an edition for German speakers learning Ukrainian, which the user also
+    imports into `Ukrainisch::*`;
+  - an edition for Ukrainian speakers learning German.
+
+  Both editions are published. Neither is only for private use.
 
   Each edition has its own note type and card templates, and its labels and
   notes are in its audience's language. Every note has a stable ID, which the

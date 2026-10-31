@@ -420,10 +420,12 @@ When a decision is made, move it to "Decisions" above.
 - English audio: a native speaker, or text-to-speech with a listening check by
   a native or very good English speaker (English TTS is much more reliable
   than Ukrainian, but the rule against wrong pronunciations still applies)?
-- English content: the existing `en` cells were written as a bridge and many
-  are explanations, not learnable answers (`doctor (woman)`, `poo (children's
-  word)`). They need a cleanup pass, and English review items (`EN:`) need a
-  native or very good English reviewer.
+- English content: the `en` cells have had a first cleanup pass (one learnable
+  headword, alternatives and US forms in `en_synonyms`, abbreviations in
+  `en_abbr`; `uk_note_en` translated from `uk_note_de`). Still open: `en_ipa`,
+  `en_note_uk` and `example_en` are empty, and the English in the word lists
+  has not been checked by a native or very good English speaker yet (the
+  `EN:` items in `review` are the explicit questions).
 - Should the recordings be published, in the repo and in the public packages?
   This applies to the user's own German recordings as well. `audio/` is
   gitignored until this is decided.

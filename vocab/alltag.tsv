@@ -104,9 +104,12 @@ zahn	draft	niveau::a1 szenario::koerper	der Zahn	die Zähne	t͡saːn				зуб	m
 brust	draft	niveau::a1 szenario::koerper	die Brust	die Brüste	bʁʊst				гру́ди	pl					chest			https://de.wiktionary.org/wiki/Brust | https://en.wiktionary.org/wiki/груди	
 bauch	draft	niveau::a1 szenario::koerper	der Bauch	die Bäuche	baʊ̯x				живі́т	m					abdomen; belly			https://de.wiktionary.org/wiki/Bauch | https://en.wiktionary.org/wiki/живіт	
 ruecken	draft	niveau::a1 szenario::koerper	der Rücken	die Rücken	ˈʁʏkn̩				спи́на	f					back			https://de.wiktionary.org/wiki/Rücken | https://en.wiktionary.org/wiki/спина	
+schulter	draft	niveau::a1 szenario::koerper	die Schulter	die Schultern	ˈʃʊltɐ				плече́	n					shoulder			https://de.wiktionary.org/wiki/Schulter | https://en.wiktionary.org/wiki/плече	
+ellenbogen	draft	niveau::a1 szenario::koerper	der Ellenbogen	die Ellenbogen	ˈɛlənˌboːɡn̩	der Ellbogen			лі́коть	m					elbow			https://de.wiktionary.org/wiki/Ellenbogen | https://en.wiktionary.org/wiki/лікоть	
 arm	draft	niveau::a1 szenario::koerper	der Arm	die Arme	aʁm				рука́	f				рука́ bedeutet Arm und Hand.	arm			https://de.wiktionary.org/wiki/Arm | https://en.wiktionary.org/wiki/рука	UK: рука́ is also the answer for "hand"; suggest a Ukrainian hint in parentheses for the hand note (e.g. "рука́ (кисть)") so the Ukrainian→German card is unambiguous.
 hand	draft	niveau::a1 szenario::koerper	die Hand	die Hände	hant				рука́	f				рука́ bedeutet Arm und Hand; anatomisch: кисть.	hand			https://de.wiktionary.org/wiki/Hand | https://en.wiktionary.org/wiki/рука	
 bein	draft	niveau::a1 szenario::koerper	das Bein	die Beine	baɪ̯n				нога́	f				нога́ bedeutet Bein und Fuß.	leg			https://de.wiktionary.org/wiki/Bein | https://en.wiktionary.org/wiki/нога	
+knie	draft	niveau::a1 szenario::koerper	das Knie	die Knie	kniː				колі́но	n					knee			https://de.wiktionary.org/wiki/Knie | https://en.wiktionary.org/wiki/коліно	
 fuss	draft	niveau::a1 szenario::koerper	der Fuß	die Füße	fuːs				стопа́	f				Im Alltag meist нога́.	foot			https://de.wiktionary.org/wiki/Fuß | https://en.wiktionary.org/wiki/стопа | https://en.wiktionary.org/wiki/нога	
 herz	draft	niveau::a1 szenario::koerper	das Herz	die Herzen	hɛʁt͡s				се́рце	n					heart			https://de.wiktionary.org/wiki/Herz | https://en.wiktionary.org/wiki/серце	
 haut	draft	niveau::a1 szenario::koerper	die Haut	die Häute	haʊ̯t				шкі́ра	f					skin			https://de.wiktionary.org/wiki/Haut | https://en.wiktionary.org/wiki/шкіра	

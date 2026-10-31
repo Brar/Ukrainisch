@@ -270,6 +270,9 @@ German. Notes on German (usage) are in Ukrainian.
   consonants (`мазо́к із но́са`).
 - `de_plural` is `–` when the plural isn't used in the card's sense, even if
   Wiktionary lists one (`Blute`, `Urine`; `Stühle` only means chairs).
+- When two notes share a headword, a short hint in parentheses tells them
+  apart: `der Hals (innen)` (`го́рло`) and `der Hals (außen)` (`ши́я`). The
+  hint is shown on the card but not spoken in the recording.
 - Grammatical gender is colour-coded in both languages and both editions, with
   one colour scheme for masculine, feminine, neuter and plural-only. German
   gender comes from the article, Ukrainian gender from `uk_gender`. It is hard
@@ -291,6 +294,8 @@ When a decision is made, move it to "Decisions" above.
   `Ukrainisch::Alltag` uses `niveau::` tags (see "Decisions"); proposed in
   addition: a scenario tag (`szenario::isolation`, …) matching
   `docs/alltag-szenarien.md`.
+  Children's words (for paediatrics) carry `register::kindersprache`, and
+  their notes name the word adults use.
 - Grammar: the vocabulary is shared, but each audience needs different grammar
   (Ukrainian cases, aspect and verbs of motion for German speakers; German
   articles, word order, Perfekt and Sie form for Ukrainian speakers). Proposed:

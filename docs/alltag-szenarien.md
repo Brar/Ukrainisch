@@ -27,10 +27,12 @@ level descriptors yet.
 | `szenario::hoeflichkeit` | say please, thank you and sorry, and make a simple polite request ("Please sit down"). |
 | `szenario::verstaendigung` | say that I don't understand, ask someone to repeat, speak slowly or spell something. |
 | `szenario::zahlen-zeit` | use numbers, the time, days, dates and simple quantities (temperature, room number, age, date of birth). |
-| `szenario::koerper` | name the main body parts and ask or say where it hurts. |
+| `szenario::koerper` | name the main body parts and organs, and ask or say where it hurts. |
 | `szenario::befinden` | ask how someone is and understand simple answers (pain, cold, hungry, thirsty, tired, better, worse). |
 | `szenario::orientierung` | ask for and give the way inside a hospital (ward, room, floor, left, right, lift, toilet). |
 | `szenario::personen` | talk about family members and who is visiting. |
+| `szenario::kleidung` | ask someone to take off or put on clothes for an examination, and name everyday clothes. |
+| `szenario::essen-trinken` | talk about meals, food and drinks, and say what someone may or may not eat or drink. |
 
 ## A2: simple routine situations
 

@@ -182,6 +182,10 @@ column exists only for pairs that have an edition.
     the German ⇄ Ukrainian editions it is shown as a secondary line on the
     back of the card, as a bridge for English-speaking peers; it never appears
     on the front there (it would give away cognates).
+    Both roles use the same cell, so `en` holds the standard term colleagues
+    use: the clinical term in the medical lists (`pharynx`), plain everyday
+    English in `Ukrainisch::Alltag` (`throat`). The other register goes into
+    `en_synonyms`, not into the headword.
   - `en_ipa`: optional British IPA, taken from Wiktionary (entry URL in
     `source`).
   - `en_synonyms`: synonyms in real use, including the US form where it

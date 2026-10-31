@@ -31,6 +31,8 @@ level descriptors yet.
 | `szenario::befinden` | ask how someone is and understand simple answers (pain, cold, hungry, thirsty, tired, better, worse). |
 | `szenario::orientierung` | ask for and give the way inside a hospital (ward, room, floor, left, right, lift, toilet). |
 | `szenario::personen` | talk about family members and who is visiting. |
+| `szenario::kleidung` | ask someone to take off or put on clothes for an examination, and name everyday clothes. |
+| `szenario::essen-trinken` | talk about meals, food and drinks, and say what someone may or may not eat or drink. |
 
 ## A2: simple routine situations
 

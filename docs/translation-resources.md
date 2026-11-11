@@ -138,9 +138,14 @@ by side, instead of translating word by word.
 | --- | --- | --- | --- |
 | HAI definitions and surveillance | KISS definitions of the NRZ (e-book, edition 06/2017; replaced the CDC definitions in KISS from 2017; summary in Epidemiologisches Bulletin 23/2017, edoc.rki.de) | Public Health Center (phc.org.ua): programme for HAI surveillance, document on routine surveillance of ІПНМД | ECDC point prevalence survey protocol 6.1 (PPS 2022–2023), with HAI and antimicrobial-use definitions and code lists; CDC NHSN definitions (not checked here) |
 | IPC organisation, hand hygiene | KRINKO recommendations (RKI); HAND-KISS protocol of Aktion Saubere Hände | Наказ МОЗ від 03.08.2021 № 1614 (registered with the Ministry of Justice under № 1318/36940; amended in April 2023), with the instruction on hand hygiene and the regulations for the infection control department (ВІК) | WHO Guidelines on Hand Hygiene in Health Care (2009), from the First Global Patient Safety Challenge "Clean Care is Safer Care" (2005), with "My 5 Moments for Hand Hygiene" and the campaign "Save Lives: Clean Your Hands" (World Hand Hygiene Day, 5 May); WHO core components for IPC (not checked here) |
-| Antibiotic stewardship | S3 guideline "Strategien zur Sicherung rationaler Antibiotika-Anwendung im Krankenhaus" (AWMF 092-001, update 2018, marked as expired and under revision); ART statements (not checked here) | Наказ МОЗ від 23.08.2023 № 1513 (standard for the rational use of antibacterial and antifungal drugs, uses WHO AWaRe); Наказ МОЗ від 09.09.2026 № 1328 (standards for primary care; check whether it replaces № 1513) | WHO AWaRe classification and antibiotic book (CC BY-NC-SA: for checking terms only) |
+| Antibiotic stewardship | S3 guideline "Strategien zur Sicherung rationaler Antibiotika-Anwendung im Krankenhaus" (AWMF 092-001, update 2018, marked as expired and under revision); ART statements (not checked here) | Наказ МОЗ від 09.09.2026 № 1328 (standards for the rational use of antimicrobial drugs in primary care); Наказ МОЗ від 23.08.2023 № 1513 (standard for hospitals, uses WHO AWaRe) | WHO AWaRe classification and antibiotic book (CC BY-NC-SA: for checking terms only) |
 | Susceptibility testing | EUCAST (whether a German version exists: not checked) | no Ukrainian EUCAST translation found; EUCAST has translation pages for other languages | EUCAST breakpoint tables and definitions (S, I, R) |
 
+- For vocabulary, use the **newest** document as the reference; which one is
+  legally in force doesn't matter. Wording does change between versions: the
+  2023 standard says *антибактеріальні і антифунгальні препарати*, the 2026
+  one *протимікробні лікарські засоби*. Prefer the current wording and keep
+  the older one as a synonym if it is still in use.
 - Hand hygiene is a ready-made parallel set: WHO's "My 5 Moments for Hand
   Hygiene" (English), adopted by Aktion Saubere Hände as the "5 Indikationen
   der Händedesinfektion" (German usage says *Indikationen*, not *Momente*),

@@ -122,6 +122,30 @@ definitions or example sentences.
 - Use the term clinical and public-health practice actually uses, not a
   literal translation. If a term can't be verified, flag it instead of
   guessing.
+
+### Specialist sources for IPC and AMR (found and checked in November 2026)
+
+The most valuable sources are **parallel definitions**: documents in each
+language that define the same things, e.g. the same types of
+healthcare-associated infection (HAI). Equivalent terms can be read off side
+by side, instead of translating word by word.
+
+| Topic | German | Ukrainian | English |
+| --- | --- | --- | --- |
+| HAI definitions and surveillance | KISS definitions of the NRZ (e-book, edition 06/2017; replaced the CDC definitions in KISS from 2017; summary in Epidemiologisches Bulletin 23/2017, edoc.rki.de) | Public Health Center (phc.org.ua): programme for HAI surveillance, document on routine surveillance of ІПНМД | ECDC point prevalence survey protocol 6.1 (PPS 2022–2023), with HAI and antimicrobial-use definitions and code lists; CDC NHSN definitions |
+| IPC organisation, hand hygiene | KRINKO recommendations (RKI); HAND-KISS protocol of Aktion Saubere Hände | Наказ МОЗ від 03.08.2021 № 1614 (registered with the Ministry of Justice under № 1318/36940; amended in April 2023), with the instruction on hand hygiene and the regulations for the infection control department (ВІК) | WHO guidelines on hand hygiene, WHO core components for IPC |
+| Antibiotic stewardship | S3 guideline "Strategien zur Sicherung rationaler Antibiotika-Anwendung im Krankenhaus" (AWMF 092-001, update 2018, marked as expired and under revision); ART statements | Наказ МОЗ від 23.08.2023 № 1513 (standard for the rational use of antibacterial and antifungal drugs, uses WHO AWaRe); Наказ МОЗ від 09.09.2026 № 1328 (standards for primary care; check whether it replaces № 1513) | WHO AWaRe classification and antibiotic book (CC BY-NC-SA: for checking terms only) |
+| Susceptibility testing | EUCAST (German translations exist) | no Ukrainian EUCAST translation found; EUCAST has translation pages for other languages | EUCAST breakpoint tables and definitions (S, I, R) |
+
+- National translations of the ECDC protocol (e.g. Italian on epicentro.iss.it)
+  show how other countries rendered the same definitions.
+- No official Ukrainian MeSH was found; only the Russian MeSH (Moscow) is
+  documented.
+- Not tested yet: Wikidata labels (CC0) as a licence-free source of term
+  equivalents for diseases and organisms.
+- Copyright: Ukrainian official acts (laws, orders) are generally not
+  protected, but guidelines, KRINKO recommendations and WHO texts are. Use them
+  to check terms; write definitions and examples in your own words.
 - WHO publications are usually CC BY-NC-SA 3.0 IGO: fine for checking a
   term, but not for copying sentences into a CC BY-SA project.
 

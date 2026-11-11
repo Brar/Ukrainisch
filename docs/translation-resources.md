@@ -137,10 +137,16 @@ by side, instead of translating word by word.
 | Topic | German | Ukrainian | English |
 | --- | --- | --- | --- |
 | HAI definitions and surveillance | KISS definitions of the NRZ (e-book, edition 06/2017; replaced the CDC definitions in KISS from 2017; summary in Epidemiologisches Bulletin 23/2017, edoc.rki.de) | Public Health Center (phc.org.ua): programme for HAI surveillance, document on routine surveillance of ІПНМД | ECDC point prevalence survey protocol 6.1 (PPS 2022–2023), with HAI and antimicrobial-use definitions and code lists; CDC NHSN definitions (not checked here) |
-| IPC organisation, hand hygiene | KRINKO recommendations (RKI); HAND-KISS protocol of Aktion Saubere Hände | Наказ МОЗ від 03.08.2021 № 1614 (registered with the Ministry of Justice under № 1318/36940; amended in April 2023), with the instruction on hand hygiene and the regulations for the infection control department (ВІК) | WHO guidelines on hand hygiene, WHO core components for IPC (not checked here) |
+| IPC organisation, hand hygiene | KRINKO recommendations (RKI); HAND-KISS protocol of Aktion Saubere Hände | Наказ МОЗ від 03.08.2021 № 1614 (registered with the Ministry of Justice under № 1318/36940; amended in April 2023), with the instruction on hand hygiene and the regulations for the infection control department (ВІК) | WHO Guidelines on Hand Hygiene in Health Care (2009), from the First Global Patient Safety Challenge "Clean Care is Safer Care" (2005), with "My 5 Moments for Hand Hygiene" and the campaign "Save Lives: Clean Your Hands" (World Hand Hygiene Day, 5 May); WHO core components for IPC (not checked here) |
 | Antibiotic stewardship | S3 guideline "Strategien zur Sicherung rationaler Antibiotika-Anwendung im Krankenhaus" (AWMF 092-001, update 2018, marked as expired and under revision); ART statements (not checked here) | Наказ МОЗ від 23.08.2023 № 1513 (standard for the rational use of antibacterial and antifungal drugs, uses WHO AWaRe); Наказ МОЗ від 09.09.2026 № 1328 (standards for primary care; check whether it replaces № 1513) | WHO AWaRe classification and antibiotic book (CC BY-NC-SA: for checking terms only) |
 | Susceptibility testing | EUCAST (whether a German version exists: not checked) | no Ukrainian EUCAST translation found; EUCAST has translation pages for other languages | EUCAST breakpoint tables and definitions (S, I, R) |
 
+- Hand hygiene is a ready-made parallel set: WHO's "My 5 Moments for Hand
+  Hygiene" (English), adopted by Aktion Saubere Hände as the "5 Indikationen
+  der Händedesinfektion" (German usage says *Indikationen*, not *Momente*),
+  and the hand hygiene instruction of Наказ МОЗ № 1614 (Ukrainian). No
+  official Ukrainian WHO "5 moments" poster was found; WHO Europe supported
+  hand hygiene in 100 Ukrainian hospitals in 2021.
 - National translations of the ECDC protocol (e.g. Italian on epicentro.iss.it)
   show how other countries rendered the same definitions.
 - No official Ukrainian MeSH was found; only the Russian MeSH (Moscow) is
